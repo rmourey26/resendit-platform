@@ -57,8 +57,8 @@ export default function HomePage() {
                     priority
                   />
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6 z-20">
-                    <h3 className="text-white font-bold text-xl">Reusable, brandable, optimized</h3>
-                    <p className="text-white/80 text-sm mt-1">Up to 40% more revenue and automatic customer rewards</p>
+                    <h3 className="text-white font-bold text-xl">Reusable, brandable, sustainable.</h3>
+                    <p className="text-white/80 text-sm mt-1">Drive up to 40% more revenue and boost loyalty 15% with ShipIQ.</p>
                   </div>
                 </div>
               </div>
@@ -77,7 +77,7 @@ export default function HomePage() {
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Features</h2>
                 <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                  Everything you need to create and share your digital business cards
+                  Everything you need to amplify revenue and reduce your carbon footprint. 
                 </p>
               </div>
             </div>
@@ -101,9 +101,9 @@ export default function HomePage() {
                     <path d="m15 9 3 3L22 8" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold">AI-Generated Designs</h3>
+                <h3 className="text-xl font-bold">Customizeable Multi-Context AI</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                  Create beautiful business cards with AI-powered design suggestions
+                  Build workflows, optimize routes, embed real time data, and automate intelligent customer rewards.  
                 </p>
               </div>
               <div className="flex flex-col items-center space-y-2 rounded-lg p-4">
@@ -127,9 +127,9 @@ export default function HomePage() {
                     <path d="M12 12v5" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold">NFT Minting</h3>
+                <h3 className="text-xl font-bold">Coin, Token, and NFT Minting</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                  Mint your business cards as NFTs on the Base blockchain
+                  Deploy incentivized marketing campaigns and rewards with the power of Web 3 technology. 
                 </p>
               </div>
               <div className="flex flex-col items-center space-y-2 rounded-lg p-4">
@@ -152,7 +152,7 @@ export default function HomePage() {
                 </div>
                 <h3 className="text-xl font-bold">PDF Download</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                  Download your business cards as PDF files for easy sharing
+                  AI and blockchain powered workflows and analytics. 
                 </p>
               </div>
             </div>
@@ -162,7 +162,7 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-        <p className="text-xs text-gray-500 dark:text-gray-400">© 2025 CardChain. All rights reserved.</p>
+        <p className="text-xs text-gray-500 dark:text-gray-400">© 2025 ShipIQ, a Resend-It Platform. All rights reserved.</p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
           <Link className="text-xs hover:underline underline-offset-4" href="#">
             Terms of Service
