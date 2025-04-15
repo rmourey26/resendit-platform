@@ -66,7 +66,7 @@ export function Navbar({ showAuth = true, isLoggedIn = false }: NavbarProps) {
             <path d="M8 11H6" />
             <path d="M8 14H6" />
           </svg>
-          <span className="text-xl font-bold">Card0</span>
+          <span className="text-xl font-bold">ShipIQ</span>
         </Link>
 
         {/* Mobile Menu Button */}
