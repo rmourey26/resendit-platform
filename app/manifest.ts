@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next"
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "CardChain - Digital Business Cards",
-    short_name: "CardChain",
-    description: "Create and mint your digital business card as an NFT",
+    name: "ShipIQ",
+    short_name: "ShipIQ",
+    description: "SPaaS with multi context RAG AI and blockchain analytics, AI agent powered workflows, and web 3 incentived rewards network.",
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",
@@ -53,14 +53,14 @@ export default function manifest(): MetadataRoute.Manifest {
       {
         name: "Dashboard",
         short_name: "Dashboard",
-        description: "View your business cards",
+        description: "View your brand and digital business card",
         url: "/dashboard",
         icons: [{ src: "/icons/icon-192x192.png", sizes: "192x192" }],
       },
       {
-        name: "Create Card",
+        name: "Create Brand",
         short_name: "Create",
-        description: "Create a new business card",
+        description: "Create a new brand.",
         url: "/dashboard?action=create",
         icons: [{ src: "/icons/icon-192x192.png", sizes: "192x192" }],
       },
