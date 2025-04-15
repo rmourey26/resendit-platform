@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Digital Business Card NFT",
-  description: "Create and mint your digital business card as an NFT",
-  generator: "v0.dev",
+  title: "ShipIQ",
+  description: "SPaaS with multi context RAG AI and blockchain analytics, AI agent powered workflows, and web 3 incentived rewards network.",
+  generator: "NextJS",
 }
