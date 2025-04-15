@@ -8,8 +8,8 @@ import { AppInstallBanner } from "@/components/app-install-banner"
 import { PWARegister } from "@/components/pwa-register"
 
 export const metadata: Metadata = {
-  title: "Home | Digital Business Card NFT",
-  description: "Create and mint your digital business card as an NFT",
+  title: "ShipIQ",
+  description: "SPaaS with multi context RAG AI and blockchain analytics, AI agent powered workflows, and web 3 incentived rewards network.",
 }
 
 export default function HomePage() {
@@ -26,11 +26,10 @@ export default function HomePage() {
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2 max-w-[600px]">
                   <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                    Digital Business Cards as NFTs
+                    ShipIQ
                   </h1>
                   <p className="text-gray-500 md:text-xl dark:text-gray-400 mt-4">
-                    Create stunning digital business cards, mint them as NFTs on the Base blockchain, and download them
-                    as PDFs. Share your professional identity in a modern way.
+                     SPaaS with multi context RAG AI and blockchain analytics, AI agent powered workflows, and web 3 incentived rewards network.
                   </p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3 mt-6">
@@ -58,8 +57,8 @@ export default function HomePage() {
                     priority
                   />
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6 z-20">
-                    <h3 className="text-white font-bold text-xl">Professional Digital Identity</h3>
-                    <p className="text-white/80 text-sm mt-1">Customizable business cards for the digital age</p>
+                    <h3 className="text-white font-bold text-xl">Reusable, brandable, optimized</h3>
+                    <p className="text-white/80 text-sm mt-1">Up to 40% more revenue and automatic customer rewards</p>
                   </div>
                 </div>
               </div>
