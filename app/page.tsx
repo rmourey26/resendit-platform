@@ -29,7 +29,7 @@ export default function HomePage() {
                     ShipIQ
                   </h1>
                   <p className="text-gray-500 md:text-xl dark:text-gray-400 mt-4">
-                     SPaaS with multi context RAG AI and blockchain analytics, AI agent powered workflows, and web 3 incentived rewards network.
+                    Smart reusable packaging as a service powered by Multi-Context AI and blockchain technologies.
                   </p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3 mt-6">
@@ -57,8 +57,8 @@ export default function HomePage() {
                     priority
                   />
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6 z-20">
-                    <h3 className="text-white font-bold text-xl">Reusable, brandable, sustainable.</h3>
-                    <p className="text-white/80 text-sm mt-1">Drive up to 40% more revenue and boost loyalty 15% with ShipIQ.</p>
+                    <h3 className="text-white font-bold text-xl">IoT Web 3 AI</h3>
+                    <p className="text-white/80 text-sm mt-1"> The only SPaaS platform designed to support, learn, and optimize your entire business in real time.</p>
                   </div>
                 </div>
               </div>
@@ -77,7 +77,7 @@ export default function HomePage() {
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Features</h2>
                 <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                  Everything you need to amplify revenue and reduce your carbon footprint. 
+                   Amplify revenue 40%, boost customer loyalty 15%, and reduce your carbon footprint 22%. 
                 </p>
               </div>
             </div>
@@ -103,7 +103,7 @@ export default function HomePage() {
                 </div>
                 <h3 className="text-xl font-bold">Customizeable Multi-Context AI</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                  Build workflows, optimize routes, embed real time data, and automate intelligent customer rewards.  
+                  Create fully customizeable AI agent driven workflows to analyze data, increase margins, and engage customers - all in real time. 
                 </p>
               </div>
               <div className="flex flex-col items-center space-y-2 rounded-lg p-4">
@@ -127,9 +127,9 @@ export default function HomePage() {
                     <path d="M12 12v5" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold">Coin, Token, and NFT Minting</h3>
+                <h3 className="text-xl font-bold">Incentivized Business</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                  Deploy incentivized marketing campaigns and rewards with the power of Web 3 technology. 
+            Web 3 powered embedded finance technology rewards customer returns upon carrier pickup and with custom strategic marketing campaigns.
                 </p>
               </div>
               <div className="flex flex-col items-center space-y-2 rounded-lg p-4">
@@ -150,9 +150,9 @@ export default function HomePage() {
                     <polyline points="14 2 14 8 20 8" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold">PDF Download</h3>
+                <h3 className="text-xl font-bold">360° Optimization</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                  AI and blockchain powered workflows and analytics. 
+              Manage internal and external support channels, generate marketing material websites, and apps, deploy coins, tokens and NFTs, digitize your CRM, and more.
                 </p>
               </div>
             </div>
@@ -162,7 +162,7 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-        <p className="text-xs text-gray-500 dark:text-gray-400">© 2025 ShipIQ, a Resend-It Platform. All rights reserved.</p>
+        <p className="text-xs text-gray-500 dark:text-gray-400">© 2025 ShipIQ by Resend-It. All rights reserved.</p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
           <Link className="text-xs hover:underline underline-offset-4" href="#">
             Terms of Service
