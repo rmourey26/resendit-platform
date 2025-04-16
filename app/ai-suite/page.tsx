@@ -5,7 +5,7 @@ import { AISuiteClient } from "./ai-suite-client"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "AI Business Suite - CardChain",
+  title: "AI Business Suite - ShipIQ",
   description: "Powerful AI tools for your business",
 }
 

@@ -41,7 +41,7 @@ export function ProfileShareModal({ userId, userData }: ProfileShareModalProps) 
       const url =
         typeof window !== "undefined"
           ? `${window.location.origin}/p/${publicId}`
-          : `${process.env.NEXT_PUBLIC_APP_URL || "https://cardchain.app"}/p/${publicId}`
+          : `${process.env.NEXT_PUBLIC_APP_URL || "https://shipiq.app"}/p/${publicId}`
       setShareUrl(url)
     }
   }, [publicId])
@@ -64,7 +64,7 @@ export function ProfileShareModal({ userId, userData }: ProfileShareModalProps) 
           const url =
             typeof window !== "undefined"
               ? `${window.location.origin}/p/${result.public_id}`
-              : `${process.env.NEXT_PUBLIC_APP_URL || "https://cardchain.app"}/p/${result.public_id}`
+              : `${process.env.NEXT_PUBLIC_APP_URL || "https://shipiq.app"}/p/${result.public_id}`
 
           setShareUrl(url)
         } else {

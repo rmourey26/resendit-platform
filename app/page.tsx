@@ -9,7 +9,7 @@ import { PWARegister } from "@/components/pwa-register"
 
 export const metadata: Metadata = {
   title: "ShipIQ",
-  description: "SPaaS with multi context RAG AI and blockchain analytics, AI agent powered workflows, and web 3 incentived rewards network.",
+  description: "SPaaS with multi context RAG AI and blockchain analytics, AI agent powered workflows, and blockchain powered incentivized rewards.".
 }
 
 export default function HomePage() {
@@ -57,7 +57,7 @@ export default function HomePage() {
                     priority
                   />
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6 z-20">
-                    <h3 className="text-white font-bold text-xl">IoT Web 3 AI</h3>
+                    <h3 className="text-white font-bold text-xl">Ecommerce Meets High-Tech</h3>
                     <p className="text-white/80 text-sm mt-1"> The only SPaaS platform designed to support, learn, and optimize your entire business in real time.</p>
                   </div>
                 </div>

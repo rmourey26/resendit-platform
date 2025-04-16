@@ -4,14 +4,14 @@ import { Toaster } from "@/components/ui/toaster"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Digital Business Card NFT",
-  description: "Create and mint your digital business card as an NFT",
-  generator: "v0.dev",
+  title: "ShipIQ",
+  description: "Smart reusable packaging as a service powered by Multi-Context AI and Web 3.0 embedded finance technologies.",
+  generator: "NextJS",
   manifest: "/manifest",
-  applicationName: "CardChain",
+  applicationName: "ShipIQ",
   appleWebApp: {
     capable: true,
-    title: "CardChain",
+    title: "ShipIQ",
     statusBarStyle: "default",
   },
   formatDetection: {
@@ -19,9 +19,9 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    siteName: "CardChain",
-    title: "CardChain - Digital Business Cards",
-    description: "Create and mint your digital business card as an NFT",
+    siteName: "ShipIQ",
+    title: "ShipIQ - Smart Reususable Packaging as a Service",
+    description: "Smart reusable packaging as a service powered by Multi-Context AI and Web 3.0 embedded finance technologies.",
   },
 }
 
@@ -44,9 +44,9 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="CardChain" />
+        <meta name="apple-mobile-web-app-title" content="ShipIQ" />
         <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="application-name" content="CardChain" />
+        <meta name="application-name" content="ShipIQ" />
         <meta name="msapplication-TileColor" content="#3b82f6" />
         <meta name="msapplication-tap-highlight" content="no" />
       </head>

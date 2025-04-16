@@ -60,7 +60,7 @@ export function BusinessCardPreview({ profile, showEditor = true, isRecipient = 
   const profileUrl =
     typeof window !== "undefined"
       ? `${window.location.origin}/p/${profile.public_id || profile.id}`
-      : `${process.env.NEXT_PUBLIC_APP_URL || "https://cardchain.app"}/p/${profile.public_id || profile.id}`
+      : `${process.env.NEXT_PUBLIC_APP_URL || "https://shipiq.app"}/p/${profile.public_id || profile.id}`
 
   const handleEditorUpdate = () => {
     router.refresh()
