@@ -9,7 +9,7 @@ import { PWARegister } from "@/components/pwa-register"
 
 export const metadata: Metadata = {
   title: "ShipIQ",
-  description: "SPaaS with multi context RAG AI and blockchain analytics, AI agent powered workflows, and blockchain powered incentivized rewards.".
+  description: "SPaaS with multi context RAG AI and blockchain analytics, AI agent powered workflows, and blockchain powered incentivized rewards."
 }
 
 export default function HomePage() {
