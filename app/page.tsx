@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Navbar } from "@/components/navbar"
 import { AppInstallBanner } from "@/components/app-install-banner"
 import { PWARegister } from "@/components/pwa-register"
+import PrismContainer from "@/components/prism-container"
 
 export const metadata: Metadata = {
   title: "ShipIQ",
@@ -64,6 +65,7 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+<PrismContainer/>
 
           {/* Decorative elements */}
           <div className="absolute top-1/4 right-0 w-32 h-32 bg-blue-200 rounded-full blur-3xl opacity-30 dark:bg-blue-900"></div>
