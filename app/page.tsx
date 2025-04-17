@@ -51,8 +51,8 @@ export default function HomePage() {
                 <div className="relative w-full max-w-[500px] aspect-[4/3] rounded-lg overflow-hidden shadow-xl">
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 z-10 rounded-lg"></div>
                   <Image
-                    src="/placeholder.svg?height=600&width=800"
-                    alt="Business Card Preview"
+                    src="https://quantumone.b-cdn.net/resendit/card0hero.svg?height=600&width=800"
+                    alt="ShipIq-Hero"
                     fill
                     className="object-cover"
                     priority
