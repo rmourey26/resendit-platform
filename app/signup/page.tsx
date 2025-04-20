@@ -3,7 +3,7 @@ import SignupPageClient from "./pageClient"
 
 export const metadata: Metadata = {
   title: "Sign Up - ShipIQ",
-  description: "Create your account to start generating digital business cards",
+  description: "Create your ShipIQ shareable digital contact card to get started",
 }
 
 export default async function SignupPage() {
