@@ -41,7 +41,7 @@ export default function HomePage() {
                     </Button>
                   </Link>
                   <Link href="#features">
-                    <Button className="bg-gray-500 inline-flex items-center" size="lg" variant="outline">
+                    <Button size="lg" variant="secondary">
                       Learn More
                     </Button>
                   </Link>
