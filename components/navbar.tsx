@@ -85,7 +85,7 @@ export function Navbar({ showAuth = true, isLoggedIn = false }: NavbarProps) {
                   key={item.label}
                   href={item.href}
                   onClick={closeMenu}
-                  className="text-sm font-medium hover:underline underline-offset-4"
+                  className="text-sm text-gray-500 font-medium hover:underline underline-offset-4"
                 >
                   {item.label}
                 </Link>
