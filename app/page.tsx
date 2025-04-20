@@ -21,7 +21,7 @@ export default function HomePage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative w-full overflow-hidden bg-gradient-to-b from-mint-100 to-white dark:from-gray-900 dark:to-gray-800">
+        <section className="relative w-full overflow-hidden bg-gradient-to-b from-emerald-100 to-white dark:from-gray-900 dark:to-gray-800">
           <div className="container px-4 md:px-6 mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 py-12 md:py-24 lg:py-32">
               <div className="flex flex-col justify-center space-y-4">
