@@ -46,7 +46,7 @@ export function Navbar({ showAuth = true, isLoggedIn = false }: NavbarProps) {
   const allItems = showAuth ? [...navItems, ...authItems] : navItems
 
   return (
-    <header className="bg-primary border-b">
+    <header className="border-b">
       <div className="container flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2">
           <svg
