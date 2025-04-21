@@ -72,7 +72,7 @@ export function Navbar({ showAuth = true, isLoggedIn = false }: NavbarProps) {
         {/* Mobile Menu Button */}
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="outline" className="lg:hidden">
+            <Button variant="ghost" className="lg:hidden">
               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
           </SheetTrigger>
