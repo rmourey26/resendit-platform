@@ -102,7 +102,7 @@ export default function LoginPage() {
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl">Log in to your account</CardTitle>
-              <CardDescription>Enter your email and password to access your digital business cards</CardDescription>
+              <CardDescription>Enter your email and password to access your ShipIQ account.</CardDescription>
             </CardHeader>
             <form onSubmit={handleSubmit}>
               <CardContent className="space-y-4">
