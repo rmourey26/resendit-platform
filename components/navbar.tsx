@@ -104,7 +104,7 @@ export function Navbar({ showAuth = true, isLoggedIn = false }: NavbarProps) {
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex gap-4">
           {allItems.map((item) => (
-            <Link key={item.label} href={item.href} className="text-sm font-medium hover:underline underline-offset-4">
+            <Link key={item.label} href={item.href} className="text-sm text-gray-500 font-medium hover:underline underline-offset-4">
               {item.label}
             </Link>
           ))}
