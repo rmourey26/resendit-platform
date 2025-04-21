@@ -35,6 +35,8 @@ export function Navbar({ showAuth = true, isLoggedIn = false }: NavbarProps) {
         { label: "CRM", href: "/admin/crm" },
         { label: "AI Suite", href: "/ai-suite" }, // Add AI Suite link
         { label: "Profile", href: "/profile" },
+       {
+       label: "Shipping", href:"/shipping"},
       ]
     : [
         { label: "Login", href: "/login" },
@@ -44,7 +46,7 @@ export function Navbar({ showAuth = true, isLoggedIn = false }: NavbarProps) {
   const allItems = showAuth ? [...navItems, ...authItems] : navItems
 
   return (
-    <header className="border-b">
+    <header className="bg-white border-b">
       <div className="container flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2">
           <svg
