@@ -68,7 +68,7 @@ export function BusinessCardPreview({ profile, showEditor = true, isRecipient = 
 
   // Format website URL for display and linking
   const formatWebsiteForDisplay = (website: string) => {
-    if (!website) return "#"
+    if (!website) return ""
     return website.replace(/^https?:\/\//, "").replace(/\/$/, "")
   }
 
