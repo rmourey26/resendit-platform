@@ -1,10 +1,11 @@
 "use client"
 
 import { Suspense } from "react"
+import "./styles.css"
 import dynamic from "next/dynamic"
 
 // Dynamically import the 3D component with no SSR
-const FeaturePrism = dynamic(() => import("@/components/feature-prism"), {
+const FeaturePrism = dynamic(() => import("@/components/prism/feature-prism"), {
   ssr: false,
   loading: () => <LoadingFallback />,
 })

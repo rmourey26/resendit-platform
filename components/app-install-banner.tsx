@@ -77,6 +77,7 @@ export function AppInstallBanner() {
           <h3 className="font-medium">Install ShipIQ App</h3>
           <p className="text-sm text-gray-500 dark:text-gray-400">
             {isIOS ? "Tap the share button and select 'Add to Home Screen'" : "Install our app for a better experience"}
+            {isAndroid ? "Tap the share button and select 'Add to Home Screen'" : "Install our app for a better experience"}
           </p>
         </div>
         <div className="flex items-center gap-2">

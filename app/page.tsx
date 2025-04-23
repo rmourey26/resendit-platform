@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Navbar } from "@/components/navbar"
 import { AppInstallBanner } from "@/components/app-install-banner"
 import { PWARegister } from "@/components/pwa-register"
-import PrismContainer from "@/components/prism-container"
+import PrismContainer from "@/components/prism/prism-container"
 
 export const metadata: Metadata = {
   title: "ShipIQ",

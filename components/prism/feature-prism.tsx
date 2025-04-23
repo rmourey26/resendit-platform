@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState, useRef, useEffect, useMemo } from "react"
+import "./styles.css"
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import {
   Text,
