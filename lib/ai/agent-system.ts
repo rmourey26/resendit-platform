@@ -974,18 +974,26 @@ export class AgentSystem {
     const verbose = options.verbose || false
 
     // Get the agent from the database
-    const { data: agent, error } = await this.supabase
+    const { data: agent, error: agentError } = await this.supabase
       .from("ai_agents")
       .select("*, ai_models(*)")
       .eq("id", agentId)
-      .single()
+      .maybeSingle() // Use maybeSingle instead of single to avoid errors when no rows are returned
 
-    if (error || !agent) {
-      throw new Error(`Agent not found: ${error?.message || "Unknown error"}`)
+    if (agentError) {
+      throw new Error(`Error fetching agent: ${agentError.message}`)
+    }
+
+    if (!agent) {
+      throw new Error(`Agent not found with ID: ${agentId}`)
     }
 
     // Get the AI client for the agent's model
     const aiModel = agent.ai_models as AIModel
+    if (!aiModel) {
+      throw new Error(`AI model not found for agent: ${agentId}`)
+    }
+
     const aiClient = await this.getAIClient(aiModel.provider, aiModel.model_id)
 
     // Initialize the conversation
@@ -1031,10 +1039,10 @@ export class AgentSystem {
       const response = await aiClient.createChatCompletion({
         model: aiModel.model_id,
         messages,
-        temperature: agent.parameters.temperature || 0.7,
-        max_tokens: agent.parameters.max_tokens || 1000,
+        temperature: agent.parameters?.temperature || 0.7,
+        max_tokens: agent.parameters?.max_tokens || 1000,
         tools:
-          agent.tools.length > 0
+          agent.tools && agent.tools.length > 0
             ? agent.tools.map((tool: any) => ({
                 type: "function",
                 function: {
@@ -1143,13 +1151,14 @@ export class AgentSystem {
       const finalResponse = await aiClient.createChatCompletion({
         model: aiModel.model_id,
         messages,
-        temperature: agent.parameters.temperature || 0.7,
-        max_tokens: agent.parameters.max_tokens || 1000,
+        temperature: agent.parameters?.temperature || 0.7,
+        max_tokens: agent.parameters?.max_tokens || 1000,
       })
 
       // Update token usage
       result.tokens.prompt += finalResponse.usage.prompt_tokens
       result.tokens.completion += finalResponse.usage.completion_tokens
+      result.tokens.total += finalResponse.usage.total_tokens
       result.finalResponse = finalResponse.choices[0].message.content || ""
     }
 
@@ -1157,5 +1166,21 @@ export class AgentSystem {
     result.elapsedMs = Date.now() - startTime
 
     return result
+  }
+
+  // Execute a workflow
+  async executeWorkflow(workflowId: string, userId: string, input: any): Promise<any> {
+    // This is a placeholder for the workflow execution logic
+    // In a real implementation, you would fetch the workflow from the database and execute its steps
+
+    // For now, we'll just return a mock result
+    return {
+      workflowId,
+      userId,
+      input,
+      result: "Workflow executed successfully",
+      steps_executed: 3,
+      elapsed_ms: 1500,
+    }
   }
 }

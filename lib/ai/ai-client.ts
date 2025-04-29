@@ -217,11 +217,12 @@ export class AIClient {
         this.defaultModel = defaultModel || "mistral-large-latest"
         break
       case "google":
-        this.baseUrl = "https://generativelanguage.googleapis.com/v1beta"
+        // Updated Google API endpoint to use the AI Studio API
+        this.baseUrl = "https://generativelanguage.googleapis.com/v1"
         this.defaultModel = defaultModel || "gemini-1.5-pro"
         break
       case "meta":
-        this.baseUrl = "https://llama-api.meta.com/v1"
+        this.baseUrl = "https://api.llama-api.com"
         this.defaultModel = defaultModel || "meta/llama-3-70b-instruct"
         break
       case "stability":
@@ -240,15 +241,59 @@ export class AIClient {
   // Method to create chat completions
   async createChatCompletion(params: AIRequestParams): Promise<AIResponse> {
     const model = params.model || this.defaultModel
-    const endpoint = this.getChatCompletionEndpoint()
+    const endpoint = this.getChatCompletionEndpoint(model)
 
     const requestBody = this.formatChatCompletionRequest(params)
 
+    // Special handling for Google's Gemini models
+    if (this.provider === "google") {
+      try {
+        console.log(`Making request to Google API: ${this.baseUrl}${endpoint}`)
+
+        const response = await fetch(`${this.baseUrl}${endpoint}?key=${this.apiKey}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        })
+
+        if (!response.ok) {
+          const errorText = await response.text()
+          let errorMessage = `Status ${response.status}: ${response.statusText}`
+
+          try {
+            const errorJson = JSON.parse(errorText)
+            errorMessage = errorJson.error?.message || errorMessage
+          } catch (e) {
+            // If parsing fails, use the raw text
+            errorMessage = errorText || errorMessage
+          }
+
+          throw new Error(`AI API Error: ${errorMessage}`)
+        }
+
+        const data = await response.json()
+        return this.formatChatCompletionResponse(data)
+      } catch (error) {
+        console.error("Error with Google API:", error)
+        throw error
+      }
+    }
+
+    // Standard handling for other providers
     const response = await fetch(`${this.baseUrl}${endpoint}`, {
       method: "POST",
       headers: this.getHeaders(),
       body: JSON.stringify(requestBody),
     })
+
+    // Add special logging for Meta models
+    if (this.provider === "meta") {
+      console.log(`Meta API request to: ${this.baseUrl}${endpoint}`)
+      console.log(`Meta API headers: ${JSON.stringify(this.getHeaders())}`)
+      console.log(`Meta API request body: ${JSON.stringify(requestBody)}`)
+    }
 
     if (!response.ok) {
       const error = await response.json()
@@ -261,7 +306,7 @@ export class AIClient {
   // Method to create streaming chat completions
   async createStreamingChatCompletion(params: AIRequestParams, onChunk: (chunk: AIStreamChunk) => void): Promise<void> {
     const model = params.model || this.defaultModel
-    const endpoint = this.getChatCompletionEndpoint()
+    const endpoint = this.getChatCompletionEndpoint(model)
 
     const requestBody = this.formatChatCompletionRequest({
       ...params,
@@ -349,7 +394,7 @@ export class AIClient {
   }
 
   // Helper methods for endpoint determination
-  private getChatCompletionEndpoint(): string {
+  private getChatCompletionEndpoint(model: string): string {
     switch (this.provider) {
       case "openai":
         return "/chat/completions"
@@ -358,9 +403,10 @@ export class AIClient {
       case "mistral":
         return "/chat/completions"
       case "google":
-        return "/models/gemini-1.5-pro:generateContent"
+        // Use the correct endpoint format for Google's Gemini models
+        return `/models/${encodeURIComponent(model)}:generateContent`
       case "meta":
-        return "/chat/completions"
+        return "/v1/completions"
       case "local":
         return "/v1/chat/completions"
       default:
@@ -410,7 +456,7 @@ export class AIClient {
         headers["Authorization"] = `Bearer ${this.apiKey}`
         break
       case "google":
-        headers["x-goog-api-key"] = this.apiKey
+        // For Google, we'll add the API key as a query parameter instead
         break
       case "meta":
         headers["Authorization"] = `Bearer ${this.apiKey}`
@@ -461,36 +507,29 @@ export class AIClient {
           tool_choice: params.tool_choice,
         }
       case "google":
+        // Updated format for Google's Gemini API
         return {
           contents: params.messages.map((msg) => ({
             role: msg.role === "user" ? "USER" : msg.role === "assistant" ? "MODEL" : "SYSTEM",
-            parts: Array.isArray(msg.content)
-              ? msg.content.map((part) => ({
-                  text: part.type === "text" ? part.text : undefined,
-                  inline_data:
-                    part.type === "image_url"
-                      ? {
-                          mime_type: "image/jpeg",
-                          data: part.image_url?.url,
-                        }
-                      : undefined,
-                }))
-              : [{ text: msg.content }],
+            parts: [{ text: typeof msg.content === "string" ? msg.content : JSON.stringify(msg.content) }],
           })),
           generationConfig: {
-            temperature: params.temperature,
-            topP: params.top_p,
-            maxOutputTokens: params.max_tokens,
+            temperature: params.temperature || 0.7,
+            topP: params.top_p || 0.95,
+            maxOutputTokens: params.max_tokens || 1024,
           },
         }
       case "meta":
         return {
           model: params.model || this.defaultModel,
-          messages: params.messages,
-          temperature: params.temperature,
-          top_p: params.top_p,
-          max_tokens: params.max_tokens,
-          stream: params.stream,
+          messages: params.messages.map((msg) => ({
+            role: msg.role === "assistant" ? "assistant" : msg.role === "system" ? "system" : "user",
+            content: typeof msg.content === "string" ? msg.content : JSON.stringify(msg.content),
+          })),
+          temperature: params.temperature || 0.7,
+          top_p: params.top_p || 0.9,
+          max_tokens: params.max_tokens || 800,
+          stream: params.stream || false,
         }
       case "local":
         return {
@@ -596,6 +635,7 @@ export class AIClient {
       case "mistral":
         return response
       case "google":
+        // Updated response formatting for Google's Gemini API
         return {
           id: response.name || `gemini-${Date.now()}`,
           model: response.model || this.defaultModel,
@@ -605,9 +645,9 @@ export class AIClient {
               index: 0,
               message: {
                 role: "assistant",
-                content: response.candidates[0].content.parts[0].text,
+                content: response.candidates?.[0]?.content?.parts?.[0]?.text || "",
               },
-              finish_reason: response.candidates[0].finishReason === "STOP" ? "stop" : "length",
+              finish_reason: response.candidates?.[0]?.finishReason === "STOP" ? "stop" : "length",
             },
           ],
           usage: {
@@ -618,7 +658,27 @@ export class AIClient {
           },
         }
       case "meta":
-        return response
+        // Handle Meta's specific response format
+        return {
+          id: response.id || `meta-${Date.now()}`,
+          model: response.model || this.defaultModel,
+          created: Math.floor(Date.now() / 1000),
+          choices: [
+            {
+              index: 0,
+              message: {
+                role: "assistant",
+                content: response.choices?.[0]?.message?.content || response.choices?.[0]?.text || "",
+              },
+              finish_reason: response.choices?.[0]?.finish_reason || "stop",
+            },
+          ],
+          usage: response.usage || {
+            prompt_tokens: 0,
+            completion_tokens: 0,
+            total_tokens: 0,
+          },
+        }
       case "local":
         return response
       default:

@@ -16,6 +16,8 @@ import { cookies } from "next/headers"
 
 // Define the CRM provider type
 type CrmProvider = "salesforce" | "crmone" | "netsuite"
+// Define the AI provider type
+type AIProvider = "openai" | "anthropic" | "google" | "mistral" | "meta"
 
 // Define Zod schemas for CRM connection data
 const createCrmConnectionSchema = z.object({
@@ -48,22 +50,19 @@ const crmAuthSchema = z.object({
 
 // Create AI Agent
 export async function createAgent(formData: z.infer<typeof createAgentSchema> & { user_id: string }) {
-  const cookieStore = (cookies)
+  const cookieStore = cookies
   const supabase = createServerSupabaseClient(cookieStore)
 
   try {
     const {
-    data: { user}, 
+      data: { user },
     } = await supabase.auth.getUser()
 
-    if (!user)
-    
-    { 
-    return {
-    success: 
-    false,
-    error:
-    "User not authenticted" }
+    if (!user) {
+      return {
+        success: false,
+        error: "User not authenticted",
+      }
     }
     // Validate the form data
     const validatedData = createAgentSchema.parse(formData)
@@ -189,19 +188,38 @@ export async function executeAgent({ agentId, prompt }: { agentId: string; promp
       return { success: false, error: "User not authenticated" }
     }
 
+    // Get the agent details - FIX: Add proper error handling for when the agent is not found
+    const { data: agent, error: agentError } = await supabase
+      .from("ai_agents")
+      .select("*, ai_models(*)")
+      .eq("id", agentId)
+      .maybeSingle() // Use maybeSingle instead of single to avoid errors when no rows are returned
+
+    if (agentError) {
+      console.error("Error fetching agent:", agentError)
+      return { success: false, error: `Error fetching agent: ${agentError.message}` }
+    }
+
+    if (!agent) {
+      return { success: false, error: "Agent not found" }
+    }
+
     // Create an instance of the AgentSystem
     const agentSystem = new AgentSystem(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!, // Use service role key for server operations
     )
 
     // Execute the agent
-    const result = await agentSystem.executeAgent(agentId, prompt)
+    const result = await agentSystem.executeAgent(agentId, prompt, { verbose: true })
 
     return { success: true, response: result.finalResponse, data: result }
   } catch (error) {
     console.error("Error in executeAgent:", error)
-    return { success: false, error: "An unexpected error occurred" }
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "An unexpected error occurred",
+    }
   }
 }
 
@@ -344,7 +362,7 @@ export async function executeWorkflow({ workflowId, input }: { workflowId: strin
     // Create an instance of the WorkflowSystem
     const workflowSystem = new AgentSystem(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!, // Use service role key for server operations
     )
 
     // Execute the workflow
@@ -437,8 +455,8 @@ export async function mintSuiNFT(profileId: string, name: string, description: s
 
     // Prepare the NFT data
     const nftName = name || "Business Card NFT"
-    const nftDescription = description || "ShipIQ"
-    const nftUrl = imageUrl || "https://shipiq.app/logo.png"
+    const nftDescription = description || "Digital Business Card NFT"
+    const nftUrl = imageUrl || "https://cardchain.app/logo.png"
 
     // Call the mint function on the NFT contract
     // This is a simplified example - you'll need to replace with your actual contract details
@@ -1183,19 +1201,114 @@ export async function generateAIResponse({
   temperature: number
 }) {
   try {
-    const aiClient = new AIClient("openai", process.env.OPENAI_API_KEY || "", model)
+    // Get the model details from the database to determine the provider
+    const supabase = createServerSupabaseClient()
+    const { data: modelData, error: modelError } = await supabase
+      .from("ai_models")
+      .select("provider, model_id")
+      .eq("model_id", model)
+      .maybeSingle()
 
-    const response = await aiClient.createChatCompletion({
-      model,
-      messages: messages.map(({ role, content }) => ({ role, content })),
-      temperature,
-      max_tokens: 1000,
-    })
+    if (modelError) {
+      console.error("Error fetching model details:", modelError)
+      return { success: false, error: "Failed to fetch model details" }
+    }
 
-    return { success: true, response: response.choices[0].message.content }
+    // Determine the provider and API key
+    let provider: AIProvider = "openai" // Default
+    let apiKey = ""
+
+    if (modelData) {
+      provider = modelData.provider.toLowerCase() as AIProvider
+
+      switch (provider) {
+        case "openai":
+          apiKey = process.env.OPENAI_API_KEY || ""
+          break
+        case "anthropic":
+          apiKey = process.env.ANTHROPIC_API_KEY || ""
+          break
+        case "google":
+          apiKey = process.env.GOOGLE_API_KEY || ""
+          break
+        case "mistral":
+          apiKey = process.env.MISTRAL_API_KEY || ""
+          break
+        case "meta":
+          apiKey = process.env.META_API_KEY || ""
+          break
+        default:
+          return { success: false, error: `Unsupported provider: ${provider}` }
+      }
+    } else {
+      // If model not found in database, try to infer provider from model name
+      if (model.startsWith("gpt-")) {
+        provider = "openai"
+        apiKey = process.env.OPENAI_API_KEY || ""
+      } else if (model.startsWith("claude-")) {
+        provider = "anthropic"
+        apiKey = process.env.ANTHROPIC_API_KEY || ""
+      } else if (model.startsWith("gemini-")) {
+        provider = "google"
+        apiKey = process.env.GOOGLE_API_KEY || ""
+      } else if (model.startsWith("mistral-")) {
+        provider = "mistral"
+        apiKey = process.env.MISTRAL_API_KEY || ""
+      } else if (model.startsWith("llama-")) {
+        provider = "meta"
+        apiKey = process.env.META_API_KEY || ""
+      } else {
+        return { success: false, error: `Could not determine provider for model: ${model}` }
+      }
+    }
+
+    if (!apiKey) {
+      return { success: false, error: `API key not found for provider: ${provider}` }
+    }
+
+    try {
+      console.log(`Using provider: ${provider} for model: ${model}`)
+
+      const aiClient = new AIClient(provider, apiKey, model)
+
+      // Add specific logging for Meta models
+      if (provider === "meta") {
+        console.log("Using Meta Llama model with API key:", apiKey ? "API key present" : "API key missing")
+      }
+
+      const response = await aiClient.createChatCompletion({
+        model,
+        messages: messages.map(({ role, content }) => ({ role, content })),
+        temperature,
+        max_tokens: 1000,
+      })
+
+      // Check for empty or invalid response
+      if (!response || !response.choices || response.choices.length === 0) {
+        console.error("Empty or invalid response from AI provider:", response)
+        return {
+          success: false,
+          error: `Invalid response from ${provider} API`,
+        }
+      }
+
+      return { success: true, response: response.choices[0].message.content }
+    } catch (error) {
+      console.error(`Error generating AI response with ${provider} model:`, error)
+      return {
+        success: false,
+        error:
+          error instanceof Error
+            ? `Failed to generate response with ${provider} model: ${error.message}`
+            : `Failed to generate response with ${provider} model`,
+      }
+    }
   } catch (error) {
     console.error("Error generating AI response:", error)
-    return { success: false, error: "Failed to generate response" }
+    return {
+      success: false,
+      error: error instanceof Error ? `Failed to generate response: ${error.message}` : "Failed to generate response",
+    }
   }
 }
 

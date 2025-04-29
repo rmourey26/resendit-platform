@@ -42,6 +42,9 @@ export function AIChat({ user, aiModels }: AIChatProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const { toast } = useToast()
 
+  // Remove all references to environment variables from client component
+  // All API key handling will be done on the server
+
   // Auto-scroll to bottom of messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -81,19 +84,48 @@ export function AIChat({ user, aiModels }: AIChatProps) {
           },
         ])
       } else {
+        console.error("Error from AI response:", result.error)
         toast({
           title: "Error",
           description: result.error || "Failed to generate response",
           variant: "destructive",
         })
+
+        // Add a more user-friendly error message in the chat
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "assistant",
+            content: `I'm sorry, I encountered an error: ${result.error || "Failed to generate response"}. ${
+              selectedModel.includes("llama")
+                ? "There might be an issue with the Meta Llama model. Please try another model."
+                : "Please try again."
+            }`,
+            timestamp: new Date(),
+          },
+        ])
       }
     } catch (error) {
       console.error("Error generating AI response:", error)
       toast({
         title: "Error",
-        description: "An unexpected error occurred. Please try again.",
+        description: error instanceof Error ? error.message : "An unexpected error occurred. Please try again.",
         variant: "destructive",
       })
+
+      // Add a more user-friendly error message in the chat
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: `I'm sorry, I encountered an unexpected error. ${
+            selectedModel.includes("llama")
+              ? "There might be an issue with the Meta Llama model. Please try another model."
+              : "Please try again."
+          }`,
+          timestamp: new Date(),
+        },
+      ])
     } finally {
       setIsLoading(false)
     }
@@ -175,7 +207,7 @@ export function AIChat({ user, aiModels }: AIChatProps) {
               >
                 {message.role === "user" ? (
                   <Avatar>
-                    <AvatarImage src={user.user_metadata?.avatar_url} />
+                    <AvatarImage src={user.user_metadata?.avatar_url || "/placeholder.svg"} />
                     <AvatarFallback>
                       <User className="h-5 w-5" />
                     </AvatarFallback>

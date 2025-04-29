@@ -92,7 +92,7 @@ export function AIAgentsList({ agents, user, aiModels }: AIAgentsListProps) {
       } else {
         toast({
           title: "Error",
-          description: result.message || "Failed to create agent",
+          description: result.message || result.error || "Failed to create agent",
           variant: "destructive",
         })
       }
@@ -145,7 +145,7 @@ export function AIAgentsList({ agents, user, aiModels }: AIAgentsListProps) {
       } else {
         toast({
           title: "Error",
-          description: result.message || "Failed to update agent",
+          description: result.message || result.error || "Failed to update agent",
           variant: "destructive",
         })
       }
@@ -202,6 +202,8 @@ export function AIAgentsList({ agents, user, aiModels }: AIAgentsListProps) {
     if (!selectedAgent || !executionPrompt.trim()) return
 
     setIsLoading(true)
+    setExecutionResult(null)
+
     try {
       const result = await executeAgent({
         agentId: selectedAgent.id,
@@ -509,7 +511,7 @@ export function AIAgentsList({ agents, user, aiModels }: AIAgentsListProps) {
                 <div className="bg-muted p-4 rounded-md overflow-auto max-h-[300px]">
                   <p className="whitespace-pre-wrap">{executionResult.finalResponse}</p>
                 </div>
-                {executionResult.toolCalls.length > 0 && (
+                {executionResult.toolCalls && executionResult.toolCalls.length > 0 && (
                   <div className="mt-4">
                     <label className="text-sm font-medium">Tools Used</label>
                     <div className="bg-muted p-4 rounded-md overflow-auto max-h-[200px] mt-2">
