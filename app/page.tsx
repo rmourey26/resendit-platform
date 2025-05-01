@@ -7,6 +7,7 @@ import { Navbar } from "@/components/navbar"
 import { AppInstallBanner } from "@/components/app-install-banner"
 import { PWARegister } from "@/components/pwa-register"
 import { PlatformFeatures } from "@/components/platform-features"
+import { FeatureAnimations } from "@/components/feature-animations"
 
 export const metadata: Metadata = {
   title: "Home | Resend-It",
@@ -72,17 +73,20 @@ export default function HomePage() {
           <div className="absolute bottom-1/4 left-0 w-32 h-32 bg-purple-200 rounded-full blur-3xl opacity-30 dark:bg-purple-900"></div>
         </section>
 
-        {/* First Feature Animations Section 
+        {/* First Feature Animations Section */}
         <section id="platform-capabilities" className="w-full">
           <FeatureAnimations />
         </section>
-        */}
+        
 
-        {/* Second Feature Animations Section */}
+        {/* Second Feature Animations Section 
         <section id="platform-features" className="w-full">
           <PlatformFeatures />
         </section>
-      </main>
+        */}
+      
+       </main>
+      
 
       {/* PWA Components */}
       <AppInstallBanner />
