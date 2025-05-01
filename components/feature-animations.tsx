@@ -1244,6 +1244,7 @@ function SustainabilityTrackerVisual() {
   )
 }
 
+/*
 function ImplementationTimeline() {
   return (
     <motion.div
@@ -1267,7 +1268,7 @@ function ImplementationTimeline() {
           <h4 className="text-xl font-bold text-white mb-4">Phased Implementation</h4>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Phase 1 */}
+             Phase 1 
             <div className="space-y-2">
               <h5 className="text-lg font-medium text-tech-green">Phase 1: Assessment & Planning</h5>
               <p className="text-sm text-gray-300">Timeline: 4 weeks</p>
@@ -1278,7 +1279,7 @@ function ImplementationTimeline() {
               </ul>
             </div>
 
-            {/* Phase 2 */}
+            Phase 2 
             <div className="space-y-2">
               <h5 className="text-lg font-medium text-tech-green">Phase 2: System Integration</h5>
               <p className="text-sm text-gray-300">Timeline: 6 weeks</p>
@@ -1289,7 +1290,7 @@ function ImplementationTimeline() {
               </ul>
             </div>
 
-            {/* Phase 3 */}
+             Phase 3 
             <div className="space-y-2">
               <h5 className="text-lg font-medium text-tech-green">Phase 3: Launch & Optimization</h5>
               <p className="text-sm text-gray-300">Timeline: Ongoing</p>
@@ -1305,3 +1306,4 @@ function ImplementationTimeline() {
     </motion.div>
   )
 }
+*/
