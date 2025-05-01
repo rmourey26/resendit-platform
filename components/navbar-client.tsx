@@ -32,7 +32,7 @@ export function NavbarClient({ showAuth = true, isLoggedIn = false }: NavbarClie
             <path d="M8 11H6" />
             <path d="M8 14H6" />
           </svg>
-          <span className="text-xl text-gray-500 font-bold">ShipIQ</span>
+          <span className="text-xli font-bold">Card0</span>
         </Link>
         {showAuth && (
           <nav className="flex gap-4">

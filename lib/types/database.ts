@@ -76,28 +76,31 @@ export interface ReusablePackage {
 
 export interface Shipping {
   id: string
+  user_id: string
   tracking_number: string
+  status: string
   origin_address: {
+    name: string
     street: string
     city: string
     state: string
-    postal_code: string
+    zip: string
     country: string
   }
   destination_address: {
+    name: string
     street: string
     city: string
     state: string
-    postal_code: string
+    zip: string
     country: string
   }
-  package_ids: string[]
-  carrier: string | null
   shipping_date: string | null
   estimated_delivery: string | null
   actual_delivery: string | null
-  status: "pending" | "in_transit" | "delivered" | "delayed" | "cancelled"
-  cost: number | null
+  carrier: string
+  service_level: string
+  package_ids: string[] | null
   weight: number | null
   dimensions: {
     length: number
@@ -105,9 +108,12 @@ export interface Shipping {
     height: number
     unit: string
   } | null
-  metadata: Record<string, any>
+  shipping_cost: number | null
+  currency: string
+  notes: string | null
   created_at: string
   updated_at: string
+  public_id: string
 }
 
 export interface AIAnalysisResult {

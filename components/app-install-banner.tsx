@@ -74,10 +74,9 @@ export function AppInstallBanner() {
     <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 p-4 shadow-lg z-50 border-t">
       <div className="flex items-center justify-between">
         <div className="flex-1">
-          <h3 className="font-medium">Install ShipIQ App</h3>
+          <h3 className="font-medium">Install CardChain App</h3>
           <p className="text-sm text-gray-500 dark:text-gray-400">
             {isIOS ? "Tap the share button and select 'Add to Home Screen'" : "Install our app for a better experience"}
-            {isAndroid ? "Tap the share button and select 'Add to Home Screen'" : "Install our app for a better experience"}
           </p>
         </div>
         <div className="flex items-center gap-2">

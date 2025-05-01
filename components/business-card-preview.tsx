@@ -60,7 +60,7 @@ export function BusinessCardPreview({ profile, showEditor = true, isRecipient = 
   const profileUrl =
     typeof window !== "undefined"
       ? `${window.location.origin}/p/${profile.public_id || profile.id}`
-      : `${process.env.NEXT_PUBLIC_APP_URL || "https://platform.resend-it.com"}/p/${profile.public_id || profile.id}`
+      : `${process.env.NEXT_PUBLIC_APP_URL || "https://cardchain.app"}/p/${profile.public_id || profile.id}`
 
   const handleEditorUpdate = () => {
     router.refresh()
@@ -68,7 +68,6 @@ export function BusinessCardPreview({ profile, showEditor = true, isRecipient = 
 
   // Format website URL for display and linking
   const formatWebsiteForDisplay = (website: string) => {
-    if (!website) return ""
     return website.replace(/^https?:\/\//, "").replace(/\/$/, "")
   }
 

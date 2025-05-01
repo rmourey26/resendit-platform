@@ -2,10 +2,11 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Menu, X } from "lucide-react" // Import Menu and X
+import Image from "next/image"
+import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { usePathname } from "next/navigation"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet" // Import Sheet
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 interface NavbarProps {
   showAuth?: boolean
@@ -26,17 +27,19 @@ export function Navbar({ showAuth = true, isLoggedIn = false }: NavbarProps) {
 
   const navItems = [
     { label: "Features", href: "/#features" },
-    { label: "About", href: "/#about" },
+    { label: "About", href: "/about" },
   ]
 
   const authItems = isLoggedIn
     ? [
         { label: "Dashboard", href: "/dashboard" },
         { label: "CRM", href: "/admin/crm" },
-        { label: "AI Suite", href: "/ai-suite" }, // Add AI Suite link
+        { label: "AI Suite", href: "/ai-suite" },
         { label: "Profile", href: "/profile" },
-       {
-       label: "Shipping", href:"/shipping"},
+        {
+          label: "Shipping",
+          href: "/shipping",
+        },
       ]
     : [
         { label: "Login", href: "/login" },
@@ -46,55 +49,42 @@ export function Navbar({ showAuth = true, isLoggedIn = false }: NavbarProps) {
   const allItems = showAuth ? [...navItems, ...authItems] : navItems
 
   return (
-    <header className="border-b">
+    <header className="bg-gradient-to-r from-black to-gray-900 border-b border-green-500/20">
       <div className="container flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2">
-          <svg
-            className="h-6 w-6"
-            fill="none"
-            height="24"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-            width="24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect height="16" rx="2" width="20" x="2" y="4" />
-            <path d="M22 7H2" />
-            <path d="M18 14h-8" />
-            <path d="M18 11h-6" />
-            <path d="M8 11H6" />
-            <path d="M8 14H6" />
-          </svg>
-          <span className="text-xl font-bold">ShipIQ</span>
+          <Image src="/images/resendit-icon.png" alt="Resend-It Logo" width={40} height={40} className="h-10 w-10" />
+          <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-green-600">
+            Resend-It
+          </span>
         </Link>
 
         {/* Mobile Menu Button */}
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="ghost" className="lg:hidden">
+            <Button variant="ghost" className="lg:hidden text-white hover:bg-green-500/20">
               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-full max-w-xs">
+          <SheetContent side="right" className="w-full max-w-xs bg-black/95 border-green-500/30 text-white">
             <div className="flex flex-col h-full justify-center space-y-4 p-4">
-              {" "}
-              {/* Added padding */}
               {allItems.map((item) => (
                 <Link
                   key={item.label}
                   href={item.href}
                   onClick={closeMenu}
-                  className="text-sm text-gray-500 font-medium hover:underline underline-offset-4"
+                  className="text-sm font-medium hover:text-green-400 transition-colors"
                 >
                   {item.label}
                 </Link>
               ))}
               {isLoggedIn && (
-                <form action="/auth/signout" method="post">
-                  <Button variant="outline" size="sm" type="submit">
+                <form action="/api/auth/signout" method="post">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    type="submit"
+                    className="border-green-500 text-green-400 hover:bg-green-500/20"
+                  >
                     Sign Out
                   </Button>
                 </form>
@@ -104,15 +94,24 @@ export function Navbar({ showAuth = true, isLoggedIn = false }: NavbarProps) {
         </Sheet>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex gap-4">
+        <nav className="hidden lg:flex gap-6">
           {allItems.map((item) => (
-            <Link key={item.label} href={item.href} className="text-sm text-gray-500 font-medium hover:underline underline-offset-4">
+            <Link
+              key={item.label}
+              href={item.href}
+              className="text-sm font-medium text-white hover:text-green-400 transition-colors"
+            >
               {item.label}
             </Link>
           ))}
           {isLoggedIn && (
             <form action="/api/auth/signout" method="post">
-              <Button variant="outline" size="sm" type="submit">
+              <Button
+                variant="outline"
+                size="sm"
+                type="submit"
+                className="border-green-500 text-green-400 hover:bg-green-500/20"
+              >
                 Sign Out
               </Button>
             </form>

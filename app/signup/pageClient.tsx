@@ -92,7 +92,7 @@ export default function SignupPageClient() {
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl">Create your account</CardTitle>
-              <CardDescription>Enter your information to create your ShipIQ digital profile and business card.</CardDescription>
+              <CardDescription>Enter your information to create your digital business card</CardDescription>
             </CardHeader>
             <form onSubmit={handleSubmit}>
               <CardContent className="space-y-4">

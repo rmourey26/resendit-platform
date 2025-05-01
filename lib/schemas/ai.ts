@@ -146,3 +146,5 @@ export const aiAgentSchema = z.object({
 })
 
 export type AIAgent = z.infer<typeof aiAgentSchema>
+
+// Schema for data_embeddings table

@@ -1,6 +1,5 @@
-import type { Config } from "tailwindcss"
-
-const config = {
+/** @type {import('tailwindcss').Config} */
+module.exports = {
   darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
@@ -9,7 +8,6 @@ const config = {
     "./src/**/*.{ts,tsx}",
     "*.{js,ts,jsx,tsx,mdx}",
   ],
-  prefix: "",
   theme: {
     container: {
       center: true,
@@ -26,12 +24,14 @@ const config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "#34A853", // Resend-It green
+          foreground: "#FFFFFF",
+          hover: "#2D9348",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "#121212", // Resend-It black
+          foreground: "#FFFFFF",
+          hover: "#2A2A2A",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -42,8 +42,8 @@ const config = {
           foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "#E8F5E9", // Light green accent
+          foreground: "#121212",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -53,23 +53,20 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
+        // High-tech theme colors
+        tech: {
+          green: "#34A853", // Resend-It green
+          black: "#121212", // Resend-It black
+          darkGreen: "#2D9348", // Darker green for hover states
+          lightGreen: "#E8F5E9", // Light green for accents
+          gray: "#F5F5F7", // Light gray for backgrounds
+          darkGray: "#2A2A2A", // Dark gray for secondary elements
+          gradient: {
+            start: "#34A853",
+            end: "#121212",
+          },
         },
-        // Custom tech brand colors
-        "resend-green": "hsl(var(--resend-green))",
-        "tech-blue": "hsl(var(--tech-blue))",
-        "blockchain-purple": "hsl(var(--blockchain-purple))",
-        "ai-teal": "hsl(var(--ai-teal))",
-        "data-navy": "hsl(var(--data-navy))",
-        "smart-black": "hsl(var(--smart-black))",
+        "tech-green": "#34A853",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -78,37 +75,39 @@ const config = {
       },
       keyframes: {
         "accordion-down": {
-          from: { height: "0" },
+          from: { height: 0 },
           to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
           from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
+          to: { height: 0 },
         },
-        "data-pulse": {
-          "0%, 100%": { opacity: "1" },
-          "50%": { opacity: "0.6" },
+        "pulse-glow": {
+          "0%, 100%": {
+            boxShadow: "0 0 10px 2px rgba(52, 168, 83, 0.2)",
+          },
+          "50%": {
+            boxShadow: "0 0 20px 5px rgba(52, 168, 83, 0.4)",
+          },
         },
-        flow: {
-          "0%": { backgroundPosition: "0% 50%" },
-          "50%": { backgroundPosition: "100% 50%" },
-          "100%": { backgroundPosition: "0% 50%" },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "data-pulse": "data-pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        flow: "flow 15s ease infinite",
+        "pulse-glow": "pulse-glow 3s infinite",
+        float: "float 6s ease-in-out infinite",
       },
       backgroundImage: {
-        "tech-grid":
-          "linear-gradient(to right, rgba(var(--tech-blue), 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(var(--tech-blue), 0.05) 1px, transparent 1px)",
-        "data-dots": "radial-gradient(circle at 1px 1px, hsl(var(--ai-teal)) 1px, transparent 0)",
+        "tech-gradient": "linear-gradient(135deg, #34A853 0%, #121212 100%)",
+        "tech-radial": "radial-gradient(circle at center, #34A853 0%, #121212 100%)",
+        "grid-pattern":
+          "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2334A853' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
       },
     },
   },
-  plugins: [],
-} satisfies Config
-
-export default config
+  plugins: [require("tailwindcss-animate")],
+}

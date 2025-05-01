@@ -1,17 +1,19 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
 import { Toaster } from "@/components/ui/toaster"
+import { Footer } from "@/components/footer"
+import { SiteHeader } from "@/components/site-header"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "ShipIQ",
-  description: "Smart reusable packaging as a service powered by Multi-Context AI and Web 3.0 embedded finance technologies.",
-  generator: "NextJS",
+  title: "Resend-It",
+  description: "Smart reusable packaging as a service powered by Multi-Context AI and blockchain technologies",
+  generator: "v0.dev",
   manifest: "/manifest",
-  applicationName: "ShipIQ",
+  applicationName: "Resend-It",
   appleWebApp: {
     capable: true,
-    title: "ShipIQ",
+    title: "Resend-It",
     statusBarStyle: "default",
   },
   formatDetection: {
@@ -19,14 +21,22 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    siteName: "ShipIQ",
-    title: "ShipIQ - Smart Reususable Packaging as a Service",
-    description: "Smart reusable packaging as a service powered by Multi-Context AI and Web 3.0 embedded finance technologies.",
+    siteName: "Resend-It",
+    title: "Resend-It - Smart Reusable Packaging",
+    description: "Smart reusable packaging as a service powered by Multi-Context AI and blockchain technologies",
+  },
+  icons: {
+    icon: [
+      {
+        url: "/images/resendit-icon.png",
+        href: "/images/resendit-icon.png",
+      },
+    ],
   },
 }
 
 export const viewport: Viewport = {
-  themeColor: "#3b82f6",
+  themeColor: "#34A853",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -41,22 +51,21 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        <link rel="apple-touch-icon" href="/images/resendit-icon.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="ShipIQ" />
+        <meta name="apple-mobile-web-app-title" content="Resend-It" />
         <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="application-name" content="ShipIQ" />
-        <meta name="msapplication-TileColor" content="#3b82f6" />
+        <meta name="application-name" content="Resend-It" />
+        <meta name="msapplication-TileColor" content="#34A853" />
         <meta name="msapplication-tap-highlight" content="no" />
       </head>
-      <body>
-        {children}
+      <body className="min-h-screen flex flex-col">
+        <SiteHeader />
+        <div className="flex-grow">{children}</div>
+        <Footer />
         <Toaster />
       </body>
     </html>
   )
 }
-
-
-import './globals.css'

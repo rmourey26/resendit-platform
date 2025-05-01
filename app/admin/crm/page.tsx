@@ -6,7 +6,7 @@ import { redirect } from "next/navigation"
 import { getProfile } from "@/app/actions/profile"
 
 export const metadata: Metadata = {
-  title: "CRM Dashboard - ShipIQ",
+  title: "CRM Dashboard - CardChain",
   description: "Manage your CRM connections and data",
 }
 

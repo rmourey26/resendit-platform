@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { createClient } from "@/lib/supabase"
 import { useToast } from "@/components/ui/use-toast"
-import { Navbar } from "@/components/navbar"
+
 
 export default function LoginPage() {
   const router = useRouter()
@@ -90,7 +90,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar showAuth={false} />
+    
 
       <div className="flex flex-1 items-center justify-center bg-gray-50 p-4 dark:bg-gray-900">
         <motion.div
@@ -102,7 +102,7 @@ export default function LoginPage() {
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl">Log in to your account</CardTitle>
-              <CardDescription>Enter your email and password to access your ShipIQ account.</CardDescription>
+              <CardDescription>Enter your email and password to access your digital business cards</CardDescription>
             </CardHeader>
             <form onSubmit={handleSubmit}>
               <CardContent className="space-y-4">

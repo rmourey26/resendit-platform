@@ -2,285 +2,135 @@
 @tailwind components;
 @tailwind utilities;
 
-@custom-variant dark (&:is(.dark *));
-
 :root {
-  /* Base colors derived from the ResendIt logo with tech enhancements */
-  --resend-green: 142 70% 45%;
-  --tech-blue: 210 100% 50%;
-  --blockchain-purple: 265 89% 60%;
-  --ai-teal: 175 84% 45%;
-  --data-navy: 220 70% 20%;
-  --smart-black: 220 30% 10%;
-
-  /* Main colors */
-  --background: 220 20% 98%;
-  --foreground: var(--smart-black);
-
-  /* Card colors */
+  --background: 0 0% 100%;
+  --foreground: 0 0% 7%;
   --card: 0 0% 100%;
-  --card-foreground: var(--smart-black);
-
-  /* Popover colors */
+  --card-foreground: 0 0% 7%;
   --popover: 0 0% 100%;
-  --popover-foreground: var(--smart-black);
-
-  /* Primary colors - using the ResendIt green */
-  --primary: var(--resend-green);
+  --popover-foreground: 0 0% 7%;
+  --primary: 142 54% 43%;
   --primary-foreground: 0 0% 100%;
-
-  /* Secondary colors - tech blue */
-  --secondary: var(--tech-blue);
+  --secondary: 0 0% 7%;
   --secondary-foreground: 0 0% 100%;
-
-  /* Muted colors */
-  --muted: 220 20% 94%;
-  --muted-foreground: 220 10% 40%;
-
-  /* Accent colors - blockchain purple */
-  --accent: var(--blockchain-purple);
-  --accent-foreground: 0 0% 100%;
-
-  /* Destructive colors */
+  --muted: 0 0% 97%;
+  --muted-foreground: 0 0% 45%;
+  --accent: 142 54% 95%;
+  --accent-foreground: 0 0% 7%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-
-  /* Border, input, and ring colors */
-  --border: 220 20% 88%;
-  --input: 220 20% 88%;
-  --ring: var(--resend-green);
-
-  /* Chart colors - tech-inspired palette */
-  --chart-1: var(--resend-green);
-  --chart-2: var(--tech-blue);
-  --chart-3: var(--blockchain-purple);
-  --chart-4: var(--ai-teal);
-  --chart-5: 30 95% 60%;
-
-  /* Border radius - slightly more angular for tech feel */
+  --border: 0 0% 90%;
+  --input: 0 0% 90%;
+  --ring: 142 54% 43%;
   --radius: 0.5rem;
-
-  /* Sidebar colors */
-  --sidebar: 220 30% 15%;
-  --sidebar-foreground: 220 20% 98%;
-  --sidebar-primary: var(--resend-green);
-  --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: var(--blockchain-purple);
-  --sidebar-accent-foreground: 0 0% 100%;
-  --sidebar-border: 220 30% 20%;
-  --sidebar-ring: var(--resend-green);
 }
 
 .dark {
-  /* Dark mode colors - more tech-focused */
-  --background: 220 30% 10%;
-  --foreground: 220 20% 98%;
-
-  /* Card colors */
-  --card: 220 30% 13%;
-  --card-foreground: 220 20% 98%;
-
-  /* Popover colors */
-  --popover: 220 30% 13%;
-  --popover-foreground: 220 20% 98%;
-
-  /* Primary colors - using the ResendIt green */
-  --primary: var(--resend-green);
+  --background: 0 0% 7%;
+  --foreground: 0 0% 100%;
+  --card: 0 0% 10%;
+  --card-foreground: 0 0% 100%;
+  --popover: 0 0% 10%;
+  --popover-foreground: 0 0% 100%;
+  --primary: 142 54% 43%;
   --primary-foreground: 0 0% 100%;
-
-  /* Secondary colors - tech blue */
-  --secondary: var(--tech-blue);
+  --secondary: 0 0% 15%;
   --secondary-foreground: 0 0% 100%;
-
-  /* Muted colors */
-  --muted: 220 30% 18%;
-  --muted-foreground: 220 20% 70%;
-
-  /* Accent colors - blockchain purple */
-  --accent: var(--blockchain-purple);
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 65%;
+  --accent: 142 54% 15%;
   --accent-foreground: 0 0% 100%;
-
-  /* Destructive colors */
-  --destructive: 0 70% 50%;
+  --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-
-  /* Border, input, and ring colors */
-  --border: 220 30% 20%;
-  --input: 220 30% 20%;
-  --ring: var(--resend-green);
-
-  /* Chart colors */
-  --chart-1: var(--resend-green);
-  --chart-2: var(--tech-blue);
-  --chart-3: var(--blockchain-purple);
-  --chart-4: var(--ai-teal);
-  --chart-5: 30 95% 60%;
-
-  /* Sidebar colors */
-  --sidebar: 220 40% 8%;
-  --sidebar-foreground: 220 20% 98%;
-  --sidebar-primary: var(--resend-green);
-  --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: var(--blockchain-purple);
-  --sidebar-accent-foreground: 0 0% 100%;
-  --sidebar-border: 220 40% 15%;
-  --sidebar-ring: var(--resend-green);
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --radius-sm: calc(var(--radius) - 2px);
-  --radius-md: var(--radius);
-  --radius-lg: calc(var(--radius) + 2px);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  --border: 0 0% 20%;
+  --input: 0 0% 20%;
+  --ring: 142 54% 43%;
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
 
-/* Custom utility classes for Smart Packaging tech platform */
-@layer utilities {
-  /* Tech-inspired gradients */
-  .tech-gradient {
-    background: linear-gradient(135deg, hsl(var(--resend-green)), hsl(var(--tech-blue)));
-  }
-
-  .blockchain-gradient {
-    background: linear-gradient(135deg, hsl(var(--blockchain-purple)), hsl(var(--resend-green)));
-  }
-
-  .ai-gradient {
-    background: linear-gradient(135deg, hsl(var(--ai-teal)), hsl(var(--tech-blue)));
-  }
-
-  /* Glass morphism effect for modern UI */
-  .glass {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-
-  .glass-dark {
-    background: rgba(20, 20, 40, 0.7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  /* Data visualization styles */
-  .data-grid {
-    background-image: linear-gradient(rgba(var(--tech-blue), 0.1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(var(--tech-blue), 0.1) 1px, transparent 1px);
-    background-size: 20px 20px;
-  }
-
-  /* Blockchain-inspired elements */
-  .blockchain-node {
-    border-radius: 8px;
-    background-color: hsl(var(--blockchain-purple));
-    box-shadow: 0 0 15px rgba(var(--blockchain-purple), 0.5);
-  }
-
-  /* AI-inspired elements */
-  .ai-pattern {
-    background-image: radial-gradient(circle at 1px 1px, hsl(var(--ai-teal)) 1px, transparent 0);
-    background-size: 20px 20px;
-  }
-
-  /* Smart packaging brand elements */
-  .resend-circle {
-    border-radius: 50%;
-    background-color: hsl(var(--resend-green));
-    color: white;
-    box-shadow: 0 0 15px rgba(var(--resend-green), 0.3);
-  }
-
-  /* Tech borders */
-  .tech-border {
-    border: 1px solid transparent;
-    border-image: linear-gradient(135deg, hsl(var(--resend-green)), hsl(var(--tech-blue)));
-    border-image-slice: 1;
-  }
-
-  /* Animated pulse for active elements */
-  .pulse {
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  @keyframes pulse {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.7;
-    }
-  }
+/* High-tech theme specific styles */
+.tech-card {
+  @apply bg-white dark:bg-tech-black border border-gray-200 dark:border-tech-darkGray rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl;
+  background-image: linear-gradient(135deg, rgba(52, 168, 83, 0.05) 0%, rgba(18, 18, 18, 0.05) 100%);
 }
 
-/* Additional animations for tech interactions */
-@keyframes data-flow {
-  0% {
-    background-position: 0% 0%;
-  }
-  100% {
-    background-position: 100% 100%;
-  }
+.tech-button {
+  @apply bg-tech-green text-white font-medium py-2 px-4 rounded-md transition-all duration-300 hover:bg-tech-darkGreen shadow-md hover:shadow-lg;
 }
 
-.data-flow {
-  background: linear-gradient(
-    135deg,
-    rgba(var(--resend-green), 0.1),
-    rgba(var(--tech-blue), 0.1),
-    rgba(var(--blockchain-purple), 0.1),
-    rgba(var(--ai-teal), 0.1)
-  );
-  background-size: 400% 400%;
-  animation: data-flow 15s ease infinite;
+.tech-input {
+  @apply bg-gray-50 dark:bg-tech-darkGray border border-gray-200 dark:border-tech-darkGray rounded-md py-2 px-3 focus:ring-2 focus:ring-tech-green focus:border-transparent transition-all duration-300;
 }
 
-/* Subtle grid for data-focused layouts */
-.tech-grid {
-  background-size: 40px 40px;
-  background-image: linear-gradient(to right, rgba(var(--tech-blue), 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(var(--tech-blue), 0.05) 1px, transparent 1px);
+.tech-container {
+  @apply relative overflow-hidden;
+  background-image: radial-gradient(circle at 50% 50%, rgba(52, 168, 83, 0.1) 0%, rgba(18, 18, 18, 0) 70%);
+}
+
+.tech-grid-bg {
+  @apply absolute inset-0 z-0 opacity-30;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2334A853' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.glow-effect {
+  @apply relative;
+}
+
+.glow-effect::after {
+  content: "";
+  @apply absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300;
+  box-shadow: 0 0 20px 5px rgba(52, 168, 83, 0.3);
+}
+
+.glow-effect:hover::after {
+  @apply opacity-100;
+}
+
+.floating-element {
+  @apply animate-float;
+}
+
+.tech-gradient-text {
+  @apply text-transparent bg-clip-text;
+  background-image: linear-gradient(135deg, #34a853 0%, #121212 100%);
+}
+
+.blockchain-node {
+  width: 8px;
+  height: 8px;
+  background-color: #34a853;
+  border-radius: 50%;
+  opacity: 0.6;
+}
+
+.blockchain-line {
+  background-color: #34a853;
+  opacity: 0.3;
+}
+
+.bg-tech-green {
+  background-color: #34a853;
+}
+
+.text-tech-green {
+  color: #34a853;
+}
+
+.bg-grid-pattern {
+  background-image: linear-gradient(to right, rgba(52, 168, 83, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(52, 168, 83, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.bg-tech-radial {
+  background: radial-gradient(circle, rgba(52, 168, 83, 0.2) 0%, transparent 70%);
 }
