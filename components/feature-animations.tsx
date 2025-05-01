@@ -29,7 +29,6 @@ export function FeatureAnimations() {
     "Technical Capabilities",
     "Blockchain Incentives",
     "AI-Powered Insights",
-    "Implementation",
   ]
 
   const autoPlayRef = useRef<NodeJS.Timeout | null>(null)
@@ -125,7 +124,7 @@ export function FeatureAnimations() {
 
             {activeSection === 4 && <AIPoweredInsights key="ai-insights" />}
 
-            {activeSection === 5 && <ImplementationTimeline key="implementation" />}
+           
           </AnimatePresence>
 
           {/* Navigation arrows */}
