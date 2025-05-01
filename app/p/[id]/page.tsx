@@ -77,7 +77,7 @@ export default function PublicProfilePage({ params }: { params: { id: string } }
     <div className="min-h-screen flex flex-col">
       <header className="bg-white dark:bg-gray-800 shadow-sm py-4 px-6">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <h1 className="text-xl font-bold">CardChain</h1>
+          <h1 className="text-xl font-bold">Resend-It</h1>
         </div>
       </header>
 
@@ -90,7 +90,7 @@ export default function PublicProfilePage({ params }: { params: { id: string } }
       </main>
 
       <footer className="bg-white dark:bg-gray-800 py-4 px-6 text-center text-sm text-gray-500">
-        <p>© {new Date().getFullYear()} CardChain. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} Resend-It. All rights reserved.</p>
       </footer>
     </div>
   )

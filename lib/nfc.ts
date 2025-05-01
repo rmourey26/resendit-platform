@@ -91,7 +91,7 @@ export async function shareViaNfc(vCardData: string): Promise<{ success: boolean
     // Set a timeout for the NFC write operation
     const writePromise = ndef.write({
       records: [
-        { recordType: "url", data: "https://cardchain.app/card" }, // Fallback URL
+        { recordType: "url", data: "https://platform.resend-it.com/card" }, // Fallback URL
         { recordType: "text", data: vCardData }, // vCard data
       ],
     })

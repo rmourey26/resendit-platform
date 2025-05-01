@@ -7,8 +7,8 @@ import "./globals.css"
 
 export const metadata: Metadata = {
   title: "Resend-It",
-  description: "Smart reusable packaging as a service powered by Multi-Context AI and blockchain technologies",
-  generator: "v0.dev",
+  description: "Amplify revenue 40% with our eco-friendly, easy to use, robotic ready, WAIQ platform",
+  generator: "Resend-It",
   manifest: "/manifest",
   applicationName: "Resend-It",
   appleWebApp: {
@@ -22,8 +22,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "Resend-It",
-    title: "Resend-It - Smart Reusable Packaging",
-    description: "Smart reusable packaging as a service powered by Multi-Context AI and blockchain technologies",
+    title: "Resend-It",
+    description: "Amplify revenue 40% with our eco-friendly, easy to use, robotic ready, WAIQ platform",
   },
   icons: {
     icon: [

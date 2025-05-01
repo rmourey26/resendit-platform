@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Resend-It",
     short_name: "Resend-It",
-    description: "Smart reusable packaging as a service powered by Multi-Context AI and blockchain technologies",
+    description: "Smart, sustainable, eco-friendly WAIQ platform for the circular economy.",
     start_url: "/",
     display: "standalone",
     background_color: "#000000",

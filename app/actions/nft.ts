@@ -86,8 +86,8 @@ export async function mintSuiNFT(profileId: string, name: string, description: s
 
     // Prepare the NFT data
     const nftName = name || "Business Card NFT"
-    const nftDescription = description || "Digital Business Card NFT"
-    const nftUrl = imageUrl || "https://cardchain.app/logo.png"
+    const nftDescription = description || "Resend-It"
+    const nftUrl = imageUrl || "https://platform.resend-it.com/logo.png"
 
     // Call the mint function on the NFT contract
     // This is a simplified example - you'll need to replace with your actual contract details

@@ -9,18 +9,16 @@ export function Footer() {
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
               <Image
-                src="/images/resendit-icon.png"
+                src="https://quantumone.b-cdn.net/resendit/resend-it-svg.svg"
                 alt="Resend-It Logo"
-                width={40}
-                height={40}
-                className="h-10 w-10"
+                className="h-5 w-18 fill-current"
               />
               <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-green-600">
-                Resend-It
+              
               </span>
             </div>
             <p className="text-gray-400 max-w-md">
-              Smart reusable packaging as a service powered by Multi-Context AI and blockchain technologies.
+              Smart reusable packaging as a service powered by multi-context AI and blockchain technologies.
             </p>
           </div>
 

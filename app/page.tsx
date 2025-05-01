@@ -11,7 +11,7 @@ import { FeatureAnimations } from "@/components/feature-animations"
 
 export const metadata: Metadata = {
   title: "Home | Resend-It",
-  description: "Smart, sustainable, eco-friendly WAIQ platform for the circular economy",
+  description: "Smart, sustainable, eco-friendly WAIQ platform for the circular economy.",
 }
 
 export default function HomePage() {
