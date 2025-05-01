@@ -69,13 +69,13 @@ export function SiteHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-gradient-to-r from-black to-gray-900 border-b border-green-500/20">
+    <header className="sticky top-0 z-50 w-full bg-gradient-to-r from-white to-gray-800 border-b border-green-500/20">
       <div className="container flex h-16 items-center justify-between px-4 md:px-6">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2">
             <Image src="https://quantumone.b-cdn.net/resendit/resend-it-svg.svg" alt="Resend-It Logo" className="h-5 w-18" />
             <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-green-600">
-              Resend-It
+
             </span>
           </Link>
           <MainNav items={allNavItems} />
