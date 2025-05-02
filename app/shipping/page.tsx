@@ -9,7 +9,6 @@ export const metadata = {
 export default function ShippingPage() {
   return (
     <>
-      <Navbar showAuth={true} isLoggedIn={true} />
       <ShippingPageClient />
     </>
   )
