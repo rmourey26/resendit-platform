@@ -39,6 +39,7 @@ export default async function ProfilePage() {
 
     return (
       <div className="flex flex-col min-h-screen">
+        
 
         <main className="flex-1 container py-8 px-4 md:px-6">
           <h1 className="text-3xl font-bold mb-6">Your Profile</h1>

@@ -56,7 +56,7 @@ export default async function AISuitePage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar showAuth={true} isLoggedIn={true} />
+    
 
       <main className="flex-1 container mx-auto py-8 px-4">
         <h1 className="text-3xl font-bold mb-8">AI Business Suite</h1>

@@ -25,15 +25,18 @@ export function UserAvatar({ user, className }: UserAvatarProps) {
       }
 
       try {
-        const { data: profile, error } = await supabase
+        // Use .limit(1) instead of .single() to avoid errors with multiple rows
+        const { data, error } = await supabase
           .from("profiles")
           .select("avatar_url, full_name")
           .eq("user_id", user.id)
-          .single()
+          .limit(1)
 
         if (error) {
           console.error("Error fetching profile:", error)
-        } else if (profile) {
+        } else if (data && data.length > 0) {
+          // Use the first profile found
+          const profile = data[0]
           setAvatarUrl(profile.avatar_url)
 
           // Generate initials from full name or email
@@ -43,6 +46,11 @@ export function UserAvatar({ user, className }: UserAvatarProps) {
             const lastInitial = names.length > 1 ? names[names.length - 1][0] : ""
             setInitials((firstInitial + lastInitial).toUpperCase())
           } else if (user.email) {
+            setInitials(user.email[0].toUpperCase())
+          }
+        } else {
+          // No profile found, use email for initials if available
+          if (user.email) {
             setInitials(user.email[0].toUpperCase())
           }
         }

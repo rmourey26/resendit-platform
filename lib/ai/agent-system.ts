@@ -448,6 +448,308 @@ export class AgentSystem {
         }
       },
     })
+
+    // Data embeddings search tool
+    this.registerTool({
+      name: "search_embeddings",
+      description: "Search for similar documents in the data embeddings",
+      parameters: {
+        type: "object",
+        properties: {
+          query: {
+            type: "string",
+            description: "The search query",
+          },
+          limit: {
+            type: "integer",
+            description: "Number of results to return",
+            default: 5,
+          },
+          threshold: {
+            type: "number",
+            description: "Similarity threshold (0-1)",
+            default: 0.7,
+          },
+        },
+        required: ["query"],
+      },
+      execute: async (params) => {
+        try {
+          // Get the current user
+          const { data: session } = await this.supabase.auth.getSession()
+          if (!session?.user) {
+            throw new Error("User not authenticated")
+          }
+
+          // Generate embedding for the query using OpenAI
+          const openaiKey = process.env.OPENAI_API_KEY
+          if (!openaiKey) {
+            throw new Error("OpenAI API key not found")
+          }
+
+          const aiClient = new AIClient("openai", openaiKey, "text-embedding-ada-002")
+          const embeddingResponse = await aiClient.createEmbedding({
+            model: "text-embedding-ada-002",
+            input: params.query,
+          })
+
+          const queryEmbedding = embeddingResponse.data[0].embedding
+
+          // Search for similar documents in the database
+          const { data, error } = await this.supabase.rpc("match_embeddings", {
+            query_embedding: queryEmbedding,
+            match_threshold: params.threshold || 0.7,
+            match_count: params.limit || 5,
+            user_id: session.user.id,
+          })
+
+          if (error) {
+            console.error("Error searching for similar documents:", error)
+            throw error
+          }
+
+          // Format the results
+          const results = data.map((item: any) => ({
+            id: item.id,
+            content: item.metadata.content,
+            metadata: item.metadata,
+            similarity: item.similarity,
+          }))
+
+          return { results }
+        } catch (error) {
+          console.error("Error searching embeddings:", error)
+          return { error: "Failed to search embeddings: " + (error instanceof Error ? error.message : String(error)) }
+        }
+      },
+    })
+
+    // Sui blockchain query tool
+    this.registerTool({
+      name: "query_sui_blockchain",
+      description: "Query data from the Sui blockchain",
+      parameters: {
+        type: "object",
+        properties: {
+          query_type: {
+            type: "string",
+            description: "Type of query to perform",
+            enum: ["object", "transaction", "address", "nft"],
+          },
+          id: {
+            type: "string",
+            description: "ID to query (object ID, transaction ID, address, etc.)",
+          },
+          options: {
+            type: "object",
+            description: "Additional query options",
+            properties: {
+              limit: {
+                type: "integer",
+                description: "Limit the number of results",
+              },
+              offset: {
+                type: "integer",
+                description: "Offset for pagination",
+              },
+            },
+          },
+        },
+        required: ["query_type", "id"],
+      },
+      execute: async (params) => {
+        try {
+          // Import the Sui client
+          const { createSuiClient } = await import("@/lib/sui-client")
+          const suiClient = createSuiClient()
+
+          let result
+          switch (params.query_type) {
+            case "object":
+              result = await suiClient.getObject({
+                id: params.id,
+                options: {
+                  showContent: true,
+                  showOwner: true,
+                  showDisplay: true,
+                },
+              })
+              break
+            case "transaction":
+              result = await suiClient.getTransactionBlock({
+                digest: params.id,
+                options: {
+                  showEffects: true,
+                  showEvents: true,
+                  showInput: true,
+                },
+              })
+              break
+            case "address":
+              result = await suiClient.getOwnedObjects({
+                owner: params.id,
+                options: {
+                  showContent: true,
+                  showDisplay: true,
+                },
+                limit: params.options?.limit || 10,
+                cursor: params.options?.offset
+                  ? { txDigest: "", objectId: "", version: params.options.offset }
+                  : undefined,
+              })
+              break
+            case "nft":
+              // Query for NFTs owned by the address
+              const { data: nfts, error } = await this.supabase
+                .from("sui_nfts")
+                .select("*")
+                .eq("object_id", params.id)
+                .limit(1)
+                .single()
+
+              if (error) {
+                throw error
+              }
+
+              // Get the object details from Sui
+              const nftObject = await suiClient.getObject({
+                id: params.id,
+                options: {
+                  showContent: true,
+                  showOwner: true,
+                  showDisplay: true,
+                },
+              })
+
+              result = {
+                database_record: nfts,
+                blockchain_data: nftObject,
+              }
+              break
+            default:
+              throw new Error(`Unsupported query type: ${params.query_type}`)
+          }
+
+          return { result }
+        } catch (error) {
+          console.error("Error querying Sui blockchain:", error)
+          return {
+            error: "Failed to query Sui blockchain: " + (error instanceof Error ? error.message : String(error)),
+          }
+        }
+      },
+    })
+
+    // NFT analysis tool
+    this.registerTool({
+      name: "analyze_nfts",
+      description: "Analyze NFTs and provide insights",
+      parameters: {
+        type: "object",
+        properties: {
+          user_id: {
+            type: "string",
+            description: "User ID to analyze NFTs for (defaults to current user)",
+          },
+          analysis_type: {
+            type: "string",
+            description: "Type of analysis to perform",
+            enum: ["ownership", "value", "activity", "metadata"],
+          },
+        },
+        required: ["analysis_type"],
+      },
+      execute: async (params) => {
+        try {
+          // Get the current user if user_id not provided
+          let userId = params.user_id
+          if (!userId) {
+            const { data: session } = await this.supabase.auth.getSession()
+            if (!session?.user) {
+              throw new Error("User not authenticated")
+            }
+            userId = session.user.id
+          }
+
+          // Query NFTs from the database
+          const { data: nfts, error } = await this.supabase.from("sui_nfts").select("*").eq("user_id", userId)
+
+          if (error) {
+            throw error
+          }
+
+          // Perform the requested analysis
+          let analysis
+          switch (params.analysis_type) {
+            case "ownership":
+              analysis = {
+                total_nfts: nfts.length,
+                nfts_by_profile: nfts.reduce((acc: Record<string, number>, nft: any) => {
+                  acc[nft.profile_id] = (acc[nft.profile_id] || 0) + 1
+                  return acc
+                }, {}),
+              }
+              break
+            case "value":
+              // This would typically involve external price data
+              // For demo purposes, we'll use mock data
+              analysis = {
+                total_nfts: nfts.length,
+                estimated_value: nfts.length * 0.5, // Mock value in SUI tokens
+                value_distribution: {
+                  low: nfts.filter((_: any, i: number) => i % 3 === 0).length,
+                  medium: nfts.filter((_: any, i: number) => i % 3 === 1).length,
+                  high: nfts.filter((_: any, i: number) => i % 3 === 2).length,
+                },
+              }
+              break
+            case "activity":
+              // Sort NFTs by creation date
+              const sortedNfts = [...nfts].sort(
+                (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+              )
+
+              analysis = {
+                total_nfts: nfts.length,
+                newest_nft: sortedNfts[0],
+                oldest_nft: sortedNfts[sortedNfts.length - 1],
+                minting_frequency: {
+                  last_7_days: sortedNfts.filter(
+                    (nft) => new Date(nft.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+                  ).length,
+                  last_30_days: sortedNfts.filter(
+                    (nft) => new Date(nft.created_at) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+                  ).length,
+                  all_time: sortedNfts.length,
+                },
+              }
+              break
+            case "metadata":
+              analysis = {
+                total_nfts: nfts.length,
+                metadata_completeness: nfts.map((nft) => ({
+                  id: nft.id,
+                  object_id: nft.object_id,
+                  completeness: {
+                    has_name: !!nft.name,
+                    has_description: !!nft.description,
+                    has_image: !!nft.image_url,
+                    score: [!!nft.name, !!nft.description, !!nft.image_url].filter(Boolean).length / 3,
+                  },
+                })),
+              }
+              break
+            default:
+              throw new Error(`Unsupported analysis type: ${params.analysis_type}`)
+          }
+
+          return { analysis }
+        } catch (error) {
+          console.error("Error analyzing NFTs:", error)
+          return { error: "Failed to analyze NFTs: " + (error instanceof Error ? error.message : String(error)) }
+        }
+      },
+    })
   }
 
   // Helper methods for data analysis

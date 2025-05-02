@@ -23,6 +23,8 @@ import { useToast } from "@/components/ui/use-toast"
 import { createAgent, updateAgent, deleteAgent, executeAgent } from "@/app/actions/ai-actions" // Import the actions
 import type { AIModel } from "@/lib/types/database"
 import type { CreateAIAgent } from "@/lib/schemas/ai"
+import { AgentTemplateSelector } from "./agent-template-selector"
+import type { AgentTemplate } from "@/lib/ai/agent-templates"
 
 interface AIAgentsListProps {
   agents: any[]
@@ -47,10 +49,27 @@ export function AIAgentsList({ agents, user, aiModels }: AIAgentsListProps) {
   })
   const [isLoading, setIsLoading] = useState(false)
   const { toast } = useToast()
+  const [isSelectingTemplate, setIsSelectingTemplate] = useState(false)
+  const [selectedTools, setSelectedTools] = useState<string[]>([])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const handleTemplateSelect = (template: AgentTemplate) => {
+    setFormData({
+      name: template.name,
+      description: template.description,
+      system_prompt: template.systemPrompt,
+      model_id: aiModels[0]?.id || "",
+      max_tokens: template.parameters.max_tokens,
+      temperature: template.parameters.temperature,
+    })
+    // Store the selected tools
+    setSelectedTools(template.tools)
+    setIsSelectingTemplate(false)
+    setIsCreating(true)
   }
 
   const handleSelectChange = (name: string, value: string) => {
@@ -70,6 +89,7 @@ export function AIAgentsList({ agents, user, aiModels }: AIAgentsListProps) {
       max_tokens: 1000,
       temperature: 0.7,
     })
+    setSelectedTools([])
   }
 
   const handleCreateAgent = async () => {
@@ -78,6 +98,7 @@ export function AIAgentsList({ agents, user, aiModels }: AIAgentsListProps) {
       const result = await createAgent({
         ...formData,
         user_id: user.id,
+        tools: selectedTools,
       })
 
       if (result.success) {
@@ -118,6 +139,8 @@ export function AIAgentsList({ agents, user, aiModels }: AIAgentsListProps) {
       max_tokens: agent.max_tokens || 1000,
       temperature: agent.parameters?.temperature || 0.7,
     })
+    // Set the selected tools from the agent
+    setSelectedTools(agent.tools ? agent.tools.map((tool: any) => tool.name) : [])
     setIsEditing(true)
   }
 
@@ -130,6 +153,7 @@ export function AIAgentsList({ agents, user, aiModels }: AIAgentsListProps) {
         id: selectedAgent.id,
         ...formData,
         user_id: user.id,
+        tools: selectedTools,
       })
 
       if (result.success) {
@@ -235,10 +259,16 @@ export function AIAgentsList({ agents, user, aiModels }: AIAgentsListProps) {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">AI Agents</h2>
-        <Button onClick={() => setIsCreating(true)}>
-          <Plus className="mr-2 h-4 w-4" />
-          Create Agent
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={() => setIsCreating(true)}>
+            <Plus className="mr-2 h-4 w-4" />
+            Create Custom
+          </Button>
+          <Button variant="outline" onClick={() => setIsSelectingTemplate(true)}>
+            <Bot className="mr-2 h-4 w-4" />
+            Use Template
+          </Button>
+        </div>
       </div>
 
       {agents.length === 0 ? (
@@ -249,10 +279,16 @@ export function AIAgentsList({ agents, user, aiModels }: AIAgentsListProps) {
             <p className="text-muted-foreground text-center mb-4">
               You haven't created any AI agents yet. Create your first agent to get started.
             </p>
-            <Button onClick={() => setIsCreating(true)}>
-              <Plus className="mr-2 h-4 w-4" />
-              Create Agent
-            </Button>
+            <div className="flex flex-col gap-2">
+              <Button onClick={() => setIsCreating(true)}>
+                <Plus className="mr-2 h-4 w-4" />
+                Create Custom Agent
+              </Button>
+              <Button variant="outline" onClick={() => setIsSelectingTemplate(true)}>
+                <Bot className="mr-2 h-4 w-4" />
+                Use Preconfigured Template
+              </Button>
+            </div>
           </CardContent>
         </Card>
       ) : (
@@ -371,6 +407,131 @@ export function AIAgentsList({ agents, user, aiModels }: AIAgentsListProps) {
               />
               <p className="text-xs text-muted-foreground">Maximum number of tokens to generate in the response.</p>
             </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Agent Tools</label>
+              <div className="grid grid-cols-2 gap-2">
+                <div
+                  className={`p-2 border rounded-md cursor-pointer ${selectedTools.includes("web_search") ? "bg-primary/10 border-primary" : ""}`}
+                  onClick={() => {
+                    if (selectedTools.includes("web_search")) {
+                      setSelectedTools(selectedTools.filter((t) => t !== "web_search"))
+                    } else {
+                      setSelectedTools([...selectedTools, "web_search"])
+                    }
+                  }}
+                >
+                  <div className="font-medium">Web Search</div>
+                  <div className="text-xs text-muted-foreground">Search the web for information</div>
+                </div>
+                <div
+                  className={`p-2 border rounded-md cursor-pointer ${selectedTools.includes("query_database") ? "bg-primary/10 border-primary" : ""}`}
+                  onClick={() => {
+                    if (selectedTools.includes("query_database")) {
+                      setSelectedTools(selectedTools.filter((t) => t !== "query_database"))
+                    } else {
+                      setSelectedTools([...selectedTools, "query_database"])
+                    }
+                  }}
+                >
+                  <div className="font-medium">Database Query</div>
+                  <div className="text-xs text-muted-foreground">Query the database for information</div>
+                </div>
+                <div
+                  className={`p-2 border rounded-md cursor-pointer ${selectedTools.includes("analyze_data") ? "bg-primary/10 border-primary" : ""}`}
+                  onClick={() => {
+                    if (selectedTools.includes("analyze_data")) {
+                      setSelectedTools(selectedTools.filter((t) => t !== "analyze_data"))
+                    } else {
+                      setSelectedTools([...selectedTools, "analyze_data"])
+                    }
+                  }}
+                >
+                  <div className="font-medium">Data Analysis</div>
+                  <div className="text-xs text-muted-foreground">Analyze data and generate insights</div>
+                </div>
+                <div
+                  className={`p-2 border rounded-md cursor-pointer ${selectedTools.includes("search_embeddings") ? "bg-primary/10 border-primary" : ""}`}
+                  onClick={() => {
+                    if (selectedTools.includes("search_embeddings")) {
+                      setSelectedTools(selectedTools.filter((t) => t !== "search_embeddings"))
+                    } else {
+                      setSelectedTools([...selectedTools, "search_embeddings"])
+                    }
+                  }}
+                >
+                  <div className="font-medium">Embeddings Search</div>
+                  <div className="text-xs text-muted-foreground">Search vector embeddings for similar content</div>
+                </div>
+                <div
+                  className={`p-2 border rounded-md cursor-pointer ${selectedTools.includes("query_sui_blockchain") ? "bg-primary/10 border-primary" : ""}`}
+                  onClick={() => {
+                    if (selectedTools.includes("query_sui_blockchain")) {
+                      setSelectedTools(selectedTools.filter((t) => t !== "query_sui_blockchain"))
+                    } else {
+                      setSelectedTools([...selectedTools, "query_sui_blockchain"])
+                    }
+                  }}
+                >
+                  <div className="font-medium">Sui Blockchain</div>
+                  <div className="text-xs text-muted-foreground">Query data from the Sui blockchain</div>
+                </div>
+                <div
+                  className={`p-2 border rounded-md cursor-pointer ${selectedTools.includes("analyze_nfts") ? "bg-primary/10 border-primary" : ""}`}
+                  onClick={() => {
+                    if (selectedTools.includes("analyze_nfts")) {
+                      setSelectedTools(selectedTools.filter((t) => t !== "analyze_nfts"))
+                    } else {
+                      setSelectedTools([...selectedTools, "analyze_nfts"])
+                    }
+                  }}
+                >
+                  <div className="font-medium">NFT Analysis</div>
+                  <div className="text-xs text-muted-foreground">Analyze NFTs and provide insights</div>
+                </div>
+                <div
+                  className={`p-2 border rounded-md cursor-pointer ${selectedTools.includes("optimize_packaging") ? "bg-primary/10 border-primary" : ""}`}
+                  onClick={() => {
+                    if (selectedTools.includes("optimize_packaging")) {
+                      setSelectedTools(selectedTools.filter((t) => t !== "optimize_packaging"))
+                    } else {
+                      setSelectedTools([...selectedTools, "optimize_packaging"])
+                    }
+                  }}
+                >
+                  <div className="font-medium">Package Optimization</div>
+                  <div className="text-xs text-muted-foreground">Optimize packaging for shipments</div>
+                </div>
+                <div
+                  className={`p-2 border rounded-md cursor-pointer ${selectedTools.includes("estimate_shipping_cost") ? "bg-primary/10 border-primary" : ""}`}
+                  onClick={() => {
+                    if (selectedTools.includes("estimate_shipping_cost")) {
+                      setSelectedTools(selectedTools.filter((t) => t !== "estimate_shipping_cost"))
+                    } else {
+                      setSelectedTools([...selectedTools, "estimate_shipping_cost"])
+                    }
+                  }}
+                >
+                  <div className="font-medium">Shipping Cost</div>
+                  <div className="text-xs text-muted-foreground">Estimate shipping costs</div>
+                </div>
+                <div
+                  className={`p-2 border rounded-md cursor-pointer ${selectedTools.includes("generate_code") ? "bg-primary/10 border-primary" : ""}`}
+                  onClick={() => {
+                    if (selectedTools.includes("generate_code")) {
+                      setSelectedTools(selectedTools.filter((t) => t !== "generate_code"))
+                    } else {
+                      setSelectedTools([...selectedTools, "generate_code"])
+                    }
+                  }}
+                >
+                  <div className="font-medium">Code Generation</div>
+                  <div className="text-xs text-muted-foreground">Generate code based on descriptions</div>
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Selected tools: {selectedTools.length > 0 ? selectedTools.join(", ") : "None"}
+              </p>
+            </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsCreating(false)}>
@@ -469,6 +630,131 @@ export function AIAgentsList({ agents, user, aiModels }: AIAgentsListProps) {
               />
               <p className="text-xs text-muted-foreground">Maximum number of tokens to generate in the response.</p>
             </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Agent Tools</label>
+              <div className="grid grid-cols-2 gap-2">
+                <div
+                  className={`p-2 border rounded-md cursor-pointer ${selectedTools.includes("web_search") ? "bg-primary/10 border-primary" : ""}`}
+                  onClick={() => {
+                    if (selectedTools.includes("web_search")) {
+                      setSelectedTools(selectedTools.filter((t) => t !== "web_search"))
+                    } else {
+                      setSelectedTools([...selectedTools, "web_search"])
+                    }
+                  }}
+                >
+                  <div className="font-medium">Web Search</div>
+                  <div className="text-xs text-muted-foreground">Search the web for information</div>
+                </div>
+                <div
+                  className={`p-2 border rounded-md cursor-pointer ${selectedTools.includes("query_database") ? "bg-primary/10 border-primary" : ""}`}
+                  onClick={() => {
+                    if (selectedTools.includes("query_database")) {
+                      setSelectedTools(selectedTools.filter((t) => t !== "query_database"))
+                    } else {
+                      setSelectedTools([...selectedTools, "query_database"])
+                    }
+                  }}
+                >
+                  <div className="font-medium">Database Query</div>
+                  <div className="text-xs text-muted-foreground">Query the database for information</div>
+                </div>
+                <div
+                  className={`p-2 border rounded-md cursor-pointer ${selectedTools.includes("analyze_data") ? "bg-primary/10 border-primary" : ""}`}
+                  onClick={() => {
+                    if (selectedTools.includes("analyze_data")) {
+                      setSelectedTools(selectedTools.filter((t) => t !== "analyze_data"))
+                    } else {
+                      setSelectedTools([...selectedTools, "analyze_data"])
+                    }
+                  }}
+                >
+                  <div className="font-medium">Data Analysis</div>
+                  <div className="text-xs text-muted-foreground">Analyze data and generate insights</div>
+                </div>
+                <div
+                  className={`p-2 border rounded-md cursor-pointer ${selectedTools.includes("search_embeddings") ? "bg-primary/10 border-primary" : ""}`}
+                  onClick={() => {
+                    if (selectedTools.includes("search_embeddings")) {
+                      setSelectedTools(selectedTools.filter((t) => t !== "search_embeddings"))
+                    } else {
+                      setSelectedTools([...selectedTools, "search_embeddings"])
+                    }
+                  }}
+                >
+                  <div className="font-medium">Embeddings Search</div>
+                  <div className="text-xs text-muted-foreground">Search vector embeddings for similar content</div>
+                </div>
+                <div
+                  className={`p-2 border rounded-md cursor-pointer ${selectedTools.includes("query_sui_blockchain") ? "bg-primary/10 border-primary" : ""}`}
+                  onClick={() => {
+                    if (selectedTools.includes("query_sui_blockchain")) {
+                      setSelectedTools(selectedTools.filter((t) => t !== "query_sui_blockchain"))
+                    } else {
+                      setSelectedTools([...selectedTools, "query_sui_blockchain"])
+                    }
+                  }}
+                >
+                  <div className="font-medium">Sui Blockchain</div>
+                  <div className="text-xs text-muted-foreground">Query data from the Sui blockchain</div>
+                </div>
+                <div
+                  className={`p-2 border rounded-md cursor-pointer ${selectedTools.includes("analyze_nfts") ? "bg-primary/10 border-primary" : ""}`}
+                  onClick={() => {
+                    if (selectedTools.includes("analyze_nfts")) {
+                      setSelectedTools(selectedTools.filter((t) => t !== "analyze_nfts"))
+                    } else {
+                      setSelectedTools([...selectedTools, "analyze_nfts"])
+                    }
+                  }}
+                >
+                  <div className="font-medium">NFT Analysis</div>
+                  <div className="text-xs text-muted-foreground">Analyze NFTs and provide insights</div>
+                </div>
+                <div
+                  className={`p-2 border rounded-md cursor-pointer ${selectedTools.includes("optimize_packaging") ? "bg-primary/10 border-primary" : ""}`}
+                  onClick={() => {
+                    if (selectedTools.includes("optimize_packaging")) {
+                      setSelectedTools(selectedTools.filter((t) => t !== "optimize_packaging"))
+                    } else {
+                      setSelectedTools([...selectedTools, "optimize_packaging"])
+                    }
+                  }}
+                >
+                  <div className="font-medium">Package Optimization</div>
+                  <div className="text-xs text-muted-foreground">Optimize packaging for shipments</div>
+                </div>
+                <div
+                  className={`p-2 border rounded-md cursor-pointer ${selectedTools.includes("estimate_shipping_cost") ? "bg-primary/10 border-primary" : ""}`}
+                  onClick={() => {
+                    if (selectedTools.includes("estimate_shipping_cost")) {
+                      setSelectedTools(selectedTools.filter((t) => t !== "estimate_shipping_cost"))
+                    } else {
+                      setSelectedTools([...selectedTools, "estimate_shipping_cost"])
+                    }
+                  }}
+                >
+                  <div className="font-medium">Shipping Cost</div>
+                  <div className="text-xs text-muted-foreground">Estimate shipping costs</div>
+                </div>
+                <div
+                  className={`p-2 border rounded-md cursor-pointer ${selectedTools.includes("generate_code") ? "bg-primary/10 border-primary" : ""}`}
+                  onClick={() => {
+                    if (selectedTools.includes("generate_code")) {
+                      setSelectedTools(selectedTools.filter((t) => t !== "generate_code"))
+                    } else {
+                      setSelectedTools([...selectedTools, "generate_code"])
+                    }
+                  }}
+                >
+                  <div className="font-medium">Code Generation</div>
+                  <div className="text-xs text-muted-foreground">Generate code based on descriptions</div>
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Selected tools: {selectedTools.length > 0 ? selectedTools.join(", ") : "None"}
+              </p>
+            </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsEditing(false)}>
@@ -551,6 +837,13 @@ export function AIAgentsList({ agents, user, aiModels }: AIAgentsListProps) {
               )}
             </Button>
           </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Template Selector Dialog */}
+      <Dialog open={isSelectingTemplate} onOpenChange={setIsSelectingTemplate}>
+        <DialogContent className="sm:max-w-[900px]">
+          <AgentTemplateSelector onSelect={handleTemplateSelect} onCancel={() => setIsSelectingTemplate(false)} />
         </DialogContent>
       </Dialog>
     </div>

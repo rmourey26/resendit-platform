@@ -49,7 +49,7 @@ const crmAuthSchema = z.object({
 })
 
 // Create AI Agent
-export async function createAgent(formData: z.infer<typeof createAgentSchema> & { user_id: string }) {
+export async function createAgent(formData: z.infer<typeof createAgentSchema> & { user_id: string; tools?: string[] }) {
   const cookieStore = cookies
   const supabase = createServerSupabaseClient(cookieStore)
 
@@ -67,8 +67,21 @@ export async function createAgent(formData: z.infer<typeof createAgentSchema> & 
     // Validate the form data
     const validatedData = createAgentSchema.parse(formData)
 
+    // Prepare the agent data
+    const agentData = {
+      ...validatedData,
+      user_id: formData.user_id,
+      tools: formData.tools
+        ? formData.tools.map((toolName) => ({
+            name: toolName,
+            description: `Tool: ${toolName}`,
+            parameters: {}, // The actual parameters will be filled in by the agent system
+          }))
+        : [],
+    }
+
     // Insert the AI agent
-    const { data, error } = await supabase.from("ai_agents").insert(validatedData).select().single()
+    const { data, error } = await supabase.from("ai_agents").insert(agentData).select().single()
 
     if (error) {
       console.error("Error creating AI agent:", error)
@@ -87,7 +100,7 @@ export async function createAgent(formData: z.infer<typeof createAgentSchema> & 
 }
 
 // Update an existing AI agent
-export async function updateAgent(formData: z.infer<typeof updateAgentSchema> & { user_id: string }) {
+export async function updateAgent(formData: z.infer<typeof updateAgentSchema> & { user_id: string; tools?: string[] }) {
   const supabase = createServerSupabaseClient()
 
   try {
@@ -105,16 +118,21 @@ export async function updateAgent(formData: z.infer<typeof updateAgentSchema> & 
 
     const validatedData = updateAgentSchema.parse(formData)
 
+    // Prepare the update data
+    const updateData = {
+      ...validatedData,
+      tools: formData.tools
+        ? formData.tools.map((toolName) => ({
+            name: toolName,
+            description: `Tool: ${toolName}`,
+            parameters: {}, // The actual parameters will be filled in by the agent system
+          }))
+        : [],
+      updated_at: new Date().toISOString(),
+    }
+
     // Update the AI agent
-    const { data, error } = await supabase
-      .from("ai_agents")
-      .update({
-        ...validatedData,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", formData.id)
-      .select()
-      .single()
+    const { data, error } = await supabase.from("ai_agents").update(updateData).eq("id", formData.id).select().single()
 
     if (error) {
       console.error("Error updating AI agent:", error)
@@ -455,7 +473,7 @@ export async function mintSuiNFT(profileId: string, name: string, description: s
 
     // Prepare the NFT data
     const nftName = name || "Business Card NFT"
-    const nftDescription = description || "Resend-It"
+    const nftDescription = description || "Resend-It Profile NFT"
     const nftUrl = imageUrl || "https://platform.resend-it.com/logo.png"
 
     // Call the mint function on the NFT contract

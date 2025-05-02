@@ -29,7 +29,7 @@ export function MobileNav({ items }: MobileNavProps) {
           mr-0
            px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
         >
-          <Menu color="#fff" className="h-6 w-6" />
+          <Menu className="h-6 w-6 fill-current" />
           <span className="sr-only">Toggle menu</span>
         </Button>
       </SheetTrigger>
