@@ -23,52 +23,62 @@ export function AISuiteClient({ user, aiModels, aiAgents, workflows }: AISuiteCl
 
   return (
     <div className="space-y-8">
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="relative">
-          <div className="hidden sm:flex space-x-2">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex flex-col">
+        <TabsList className="w-full flex flex-row justify-between mb-4 overflow-x-auto">
+          <div className="hidden sm:flex space-x-2 mx-auto">
             <TabsTrigger value="chat" className="xs:text:xs text-sm">
+              <MessageSquare className="h-4 w-4 mr-2" />
               AI Chat
             </TabsTrigger>
             <TabsTrigger value="code" className="xs:text-xs md:text-sm">
+              <Code className="h-4 w-4 mr-2" />
               Code Generator
             </TabsTrigger>
             <TabsTrigger value="supply-chain" className="xs:text-xs md:text-sm">
+              <Package className="h-4 w-4 mr-2" />
               Supply Chain
             </TabsTrigger>
             <TabsTrigger value="models" className="xs:text-xs md:text-sm">
+              <Sparkles className="h-4 w-4 mr-2" />
               AI Models
             </TabsTrigger>
             <TabsTrigger value="agents" className="xs:text-xs md:text-sm">
+              <Bot className="h-4 w-4 mr-2" />
               AI Agents
             </TabsTrigger>
             <TabsTrigger value="workflows" className="xs:text-xs md:text-sm">
+              <ListChecks className="h-4 w-4 mr-2" />
               Workflows
             </TabsTrigger>
           </div>
-          <div className="sm:hidden flex justify-between items-center">
-            <TabsTrigger value="chat" className="flex flex-col items-center justify-center">
+          <div className="sm:hidden flex justify-between items-center w-full px-1">
+            <TabsTrigger value="chat" className="flex flex-col items-center justify-center p-2" title="AI Chat">
               <MessageSquare className="h-5 w-5" />
-              <span className="text-[0.7rem]">Chat</span>
+              <span className="text-[0.6rem] mt-1">Chat</span>
             </TabsTrigger>
-            <TabsTrigger value="code" className="flex flex-col items-center justify-center">
+            <TabsTrigger value="code" className="flex flex-col items-center justify-center p-2" title="Code Generator">
               <Code className="h-5 w-5" />
-              <span className="text-[0.7rem]">Code</span>
+              <span className="text-[0.6rem] mt-1">Code</span>
             </TabsTrigger>
-            <TabsTrigger value="supply-chain" className="flex flex-col items-center justify-center">
+            <TabsTrigger
+              value="supply-chain"
+              className="flex flex-col items-center justify-center p-2"
+              title="Supply Chain"
+            >
               <Package className="h-5 w-5" />
-              <span className="text-[0.7rem]">Supply Chain</span>
+              <span className="text-[0.6rem] mt-1">Supply</span>
             </TabsTrigger>
-            <TabsTrigger value="models" className="flex flex-col items-center justify-center">
+            <TabsTrigger value="models" className="flex flex-col items-center justify-center p-2" title="AI Models">
               <Sparkles className="h-5 w-5" />
-              <span className="text-[0.7rem]">Models</span>
+              <span className="text-[0.6rem] mt-1">Models</span>
             </TabsTrigger>
-            <TabsTrigger value="agents" className="flex flex-col items-center justify-center">
+            <TabsTrigger value="agents" className="flex flex-col items-center justify-center p-2" title="AI Agents">
               <Bot className="h-5 w-5" />
-              <span className="text-[0.7rem]">Agents</span>
+              <span className="text-[0.6rem] mt-1">Agents</span>
             </TabsTrigger>
-            <TabsTrigger value="workflows" className="flex flex-col items-center justify-center">
+            <TabsTrigger value="workflows" className="flex flex-col items-center justify-center p-2" title="Workflows">
               <ListChecks className="h-5 w-5" />
-              <span className="text-[0.7rem]">Workflows</span>
+              <span className="text-[0.6rem] mt-1">Flows</span>
             </TabsTrigger>
           </div>
         </TabsList>

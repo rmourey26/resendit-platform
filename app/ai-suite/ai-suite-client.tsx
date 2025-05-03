@@ -9,6 +9,8 @@ import { AIChat } from "@/components/ai-suite/ai-chat"
 import { AICodeGenerator } from "@/components/ai-suite/ai-code-generator"
 import { AISupplyChainOptimizer } from "@/components/ai-suite/ai-supply-chain-optimizer"
 import type { AIModel } from "@/lib/types/database"
+import { Database } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 interface AISuiteClientProps {
   user: any
@@ -35,6 +37,10 @@ export function AISuiteClient({ user, aiModels, aiAgents, workflows }: AISuiteCl
           <TabsTrigger value="models">AI Models</TabsTrigger>
           <TabsTrigger value="agents">AI Agents</TabsTrigger>
           <TabsTrigger value="workflows">Workflows</TabsTrigger>
+          <TabsTrigger value="embeddings" className="xs:text-xs md:text-sm">
+            <Database className="h-4 w-4 mr-2" />
+            Embeddings
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="chat" className="py-4">
@@ -59,6 +65,19 @@ export function AISuiteClient({ user, aiModels, aiAgents, workflows }: AISuiteCl
 
         <TabsContent value="workflows" className="py-4">
           <AIWorkflowsList workflows={workflows} user={user} />
+        </TabsContent>
+
+        <TabsContent value="embeddings" className="py-4">
+          <div className="flex flex-col items-center justify-center p-8 border rounded-lg">
+            <Database className="h-12 w-12 mb-4 text-muted-foreground" />
+            <h3 className="text-lg font-medium mb-2">Manage Embeddings</h3>
+            <p className="text-sm text-muted-foreground text-center mb-4">
+              Upload documents, manage embeddings, and configure RAG settings
+            </p>
+            <Button asChild>
+              <a href="/ai-suite/embeddings">Open Embeddings Manager</a>
+            </Button>
+          </div>
         </TabsContent>
       </Tabs>
     </div>

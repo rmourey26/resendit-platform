@@ -119,7 +119,7 @@ export class EmbeddingSystem {
     // Format the results
     const results: SearchResult[] = data.map((item: any) => ({
       id: item.id,
-      content: item.metadata.content,
+      content: item.content,
       metadata: item.metadata,
       similarity: item.similarity,
     }))
@@ -127,58 +127,46 @@ export class EmbeddingSystem {
     return results
   }
 
-  // Create embeddings for supply chain data
-  async createSupplyChainEmbeddings(
-    data: any[],
-    dataType: string,
-    userId: string,
-    name: string,
-    description?: string,
-  ): Promise<EmbeddingResult[]> {
-    // Convert data to documents
-    const documents = data.map((item) => ({
-      id: item.id,
-      content: this.formatSupplyChainData(item, dataType),
-      metadata: {
-        data_type: dataType,
-        original_data: item,
-      },
-    }))
+  // Process a document file and create chunks
+  async processDocumentFile(
+    fileContent: string,
+    fileName: string,
+    options: {
+      chunkSize: number
+      chunkOverlap: number
+    },
+  ): Promise<Document[]> {
+    const { chunkSize, chunkOverlap } = options
 
-    // Create embeddings
-    return this.createEmbeddings(documents, userId, name, description)
-  }
+    // Simple text chunking implementation
+    const chunks: Document[] = []
+    let startIndex = 0
 
-  // Format supply chain data for embedding
-  private formatSupplyChainData(data: any, dataType: string): string {
-    switch (dataType) {
-      case "reusable_packages":
-        return `Package ID: ${data.package_id}
-Name: ${data.name}
-Description: ${data.description || "N/A"}
-Dimensions: ${data.dimensions.length}x${data.dimensions.width}x${data.dimensions.height} ${data.dimensions.unit}
-Weight Capacity: ${data.weight_capacity}
-Material: ${data.material || "N/A"}
-Reuse Count: ${data.reuse_count}
-Status: ${data.status}
-Location: ${data.location_id || "N/A"}`
+    while (startIndex < fileContent.length) {
+      const endIndex = Math.min(startIndex + chunkSize, fileContent.length)
+      const chunk = fileContent.substring(startIndex, endIndex)
 
-      case "shipping":
-        return `Tracking Number: ${data.tracking_number}
-Origin: ${data.origin_address.street}, ${data.origin_address.city}, ${data.origin_address.state}, ${data.origin_address.postal_code}, ${data.origin_address.country}
-Destination: ${data.destination_address.street}, ${data.destination_address.city}, ${data.destination_address.state}, ${data.destination_address.postal_code}, ${data.destination_address.country}
-Carrier: ${data.carrier || "N/A"}
-Status: ${data.status}
-Shipping Date: ${data.shipping_date || "N/A"}
-Estimated Delivery: ${data.estimated_delivery || "N/A"}
-Actual Delivery: ${data.actual_delivery || "N/A"}
-Cost: ${data.cost || "N/A"}
-Weight: ${data.weight || "N/A"}
-Dimensions: ${data.dimensions ? `${data.dimensions.length}x${data.dimensions.width}x${data.dimensions.height} ${data.dimensions.unit}` : "N/A"}`
+      chunks.push({
+        id: `${fileName}-chunk-${chunks.length}`,
+        content: chunk,
+        metadata: {
+          fileName,
+          chunkIndex: chunks.length,
+          startIndex,
+          endIndex,
+        },
+      })
 
-      default:
-        return JSON.stringify(data)
+      // Move the window, accounting for overlap
+      startIndex = endIndex - chunkOverlap
+
+      // Ensure we make progress
+      if (startIndex >= fileContent.length || startIndex <= 0) {
+        break
+      }
     }
+
+    return chunks
   }
 
   // Get all embeddings for a user

@@ -41,6 +41,62 @@ export interface DataEmbedding {
   updated_at: string
 }
 
+export interface EmbeddingFile {
+  id: string
+  file_name: string
+  file_type: string
+  file_size: number
+  file_path: string
+  embedding_id: string | null
+  user_id: string
+  created_at: string
+  updated_at: string
+}
+
+export interface EmbeddingJob {
+  id: string
+  status: "pending" | "processing" | "completed" | "failed"
+  job_type: string
+  embedding_id: string | null
+  file_ids: string[] | null
+  parameters: Record<string, any>
+  result: Record<string, any> | null
+  error: string | null
+  user_id: string
+  created_at: string
+  updated_at: string
+}
+
+export interface EmbeddingUsage {
+  id: string
+  embedding_id: string
+  agent_id: string | null
+  query: string | null
+  tokens_used: number | null
+  similarity_score: number | null
+  user_id: string
+  created_at: string
+}
+
+export interface UserSettings {
+  id: string
+  user_id: string
+  settings_type: string
+  settings: Record<string, any>
+  created_at: string
+  updated_at: string
+}
+
+export interface AIAgentSettings {
+  id: string
+  user_id: string
+  agent_id: string
+  settings_type: string
+  settings: Record<string, any>
+  created_at: string
+  updated_at: string
+}
+
 export interface SupplyChainData {
   id: string
   name: string

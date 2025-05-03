@@ -52,9 +52,9 @@ export function Navbar({ showAuth = true, isLoggedIn = false }: NavbarProps) {
     <header className="bg-gradient-to-r from-black to-gray-900 border-b border-green-500/20">
       <div className="container flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2">
-          <Image src="https://quantumone.b-cdn.net/resendit/resend-it-svg.svg" alt="Resend-It Logo" className="h-5 w-18" />
+          <Image src="/images/resendit-icon.png" alt="Resend-It Logo" width={40} height={40} className="h-10 w-10" />
           <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-green-600">
-          
+            Resend-It
           </span>
         </Link>
 

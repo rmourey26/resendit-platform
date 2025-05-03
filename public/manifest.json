@@ -1,7 +1,7 @@
 {
-  "name": "Resend-It Platform",
-  "short_name": "",
-  "description": "Amplify revenue 40% with our eco-friendly, easy to use, robotic ready, WAIQ platform",
+  "name": "Resend-It Platform - The Business Optimization Engine",
+  "short_name": "Resend-It Platform",
+  "description": "",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -61,15 +61,15 @@
     {
       "name": "Dashboard",
       "short_name": "Dashboard",
-      "description": "View your digital profile",
+      "description": "View your business cards",
       "url": "/dashboard",
       "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
     },
     {
-      "name": "Create AI Agent",
-      "short_name": "Create AI Agent",
-      "description": "Amplify revenue 40% with our eco-friendly, easy to use, robotic ready, WAIQ platform",
-      "url": "/ai-suite?action=create",
+      "name": "Create Card",
+      "short_name": "Create",
+      "description": "Create a new business card",
+      "url": "/dashboard?action=create",
       "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
     }
   ],

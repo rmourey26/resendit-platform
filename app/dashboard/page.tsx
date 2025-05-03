@@ -50,6 +50,7 @@ export default async function DashboardPage() {
 
     return (
       <div className="min-h-screen flex flex-col">
+       
         <main className="flex-1 container mx-auto py-8 px-4">
           <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
           <DashboardClient user={user} profile={profile} nfts={nfts || []} suiNfts={suiNfts || []} />
@@ -60,7 +61,7 @@ export default async function DashboardPage() {
     console.error("Error in dashboard page:", error)
     return (
       <div className="min-h-screen flex flex-col">
-        <Navbar showAuth={true} isLoggedIn={true} />
+        
         <main className="flex-1 container mx-auto py-8 px-4">
           <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
           <div className="bg-red-100 p-4 rounded-md">

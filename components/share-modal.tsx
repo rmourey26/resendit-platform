@@ -144,7 +144,7 @@ export function ShareModal({ profileId, userData }: ShareModalProps) {
   // Share via email
   const shareViaEmail = () => {
     if (!shareUrl) return
-    const subject = `${userData.full_name}'s Digital Business Card`
+    const subject = `${userData.full_name}'s Digital Contact Card`
     const body = `Check out my digital business card: ${shareUrl}`
     const mailtoUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
     window.open(mailtoUrl, "_blank")
@@ -236,7 +236,7 @@ export function ShareModal({ profileId, userData }: ShareModalProps) {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `${userData.full_name}'s Digital Business Card`,
+          title: `${userData.full_name}'s Digital Contact Card`,
           text: `Check out my digital business card`,
           url: shareUrl,
         })
@@ -314,7 +314,7 @@ export function ShareModal({ profileId, userData }: ShareModalProps) {
       try {
         // Just share the URL if we can't share files
         await navigator.share({
-          title: `${userData.full_name}'s Digital Business Card`,
+          title: `${userData.full_name}'s Digital Contact Card`,
           text: `Check out my digital business card`,
           url: shareUrl,
         })

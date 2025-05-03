@@ -3,15 +3,13 @@ import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Navbar } from "@/components/navbar"
 import { AppInstallBanner } from "@/components/app-install-banner"
 import { PWARegister } from "@/components/pwa-register"
-import { PlatformFeatures } from "@/components/platform-features"
 import { FeatureAnimations } from "@/components/feature-animations"
 
 export const metadata: Metadata = {
   title: "Home | Resend-It",
-  description: "Smart, sustainable, eco-friendly WAIQ platform for the circular economy.",
+  description: "Smart, sustainable, eco-friendly WAIQ platform for the circular economy",
 }
 
 export default function HomePage() {
@@ -29,10 +27,11 @@ export default function HomePage() {
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2 max-w-[600px]">
                   <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                    Smart Packaging as-a Service
+                    Revolutionary Smart Packaging Platform
                   </h1>
                   <p className="text-gray-500 md:text-xl dark:text-gray-400 mt-4">
-                    Amplify revenue 40% with our eco-friendly, easy to use, robotic ready, WAIQ platform.
+                    Boost revenue by 40% with our award-winning, eco-friendly WAIQ platform that transforms your supply
+                    chain and enhances customer loyalty.
                   </p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3 mt-6">
@@ -73,20 +72,17 @@ export default function HomePage() {
           <div className="absolute bottom-1/4 left-0 w-32 h-32 bg-purple-200 rounded-full blur-3xl opacity-30 dark:bg-purple-900"></div>
         </section>
 
-        {/* First Feature Animations Section */}
+        {/* First Feature Animations Section  */}
         <section id="platform-capabilities" className="w-full">
           <FeatureAnimations />
         </section>
-        
 
-        {/* Second Feature Animations Section 
+        {/* Second Feature Animations Section
         <section id="platform-features" className="w-full">
           <PlatformFeatures />
         </section>
-        */}
-      
-       </main>
-      
+         */}
+      </main>
 
       {/* PWA Components */}
       <AppInstallBanner />

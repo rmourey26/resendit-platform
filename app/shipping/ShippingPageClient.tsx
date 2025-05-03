@@ -1,10 +1,12 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ShippingTable } from "@/components/shipping/shipping-table"
 import { PackagesTable } from "@/components/shipping/packages-table"
 import { ShippingAnalyticsComponent } from "@/components/shipping/shipping-analytics"
 import { NewShippingForm } from "@/components/shipping/new-shipping-form"
+import { AIEnhancedShippingDashboard } from "@/components/shipping/ai-enhanced-shipping-dashboard"
 import {
   getShippingData,
   getReusablePackages,
@@ -12,8 +14,9 @@ import {
   getPackageUtilization,
 } from "@/app/actions/shipping"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Package, Truck, CheckCircle, AlertCircle } from "lucide-react"
-import { useEffect, useState } from "react"
+import { Package, Truck, CheckCircle, AlertCircle, Sparkles } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { useToast } from "@/components/ui/use-toast"
 
 export default function ShippingPageClient() {
   const [shippingData, setShippingData] = useState([])
@@ -22,6 +25,8 @@ export default function ShippingPageClient() {
   const [utilizationData, setUtilizationData] = useState([])
   const [availablePackages, setAvailablePackages] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [activeView, setActiveView] = useState("dashboard") // "dashboard", "classic", "ai"
+  const { toast } = useToast()
 
   useEffect(() => {
     async function loadData() {
@@ -41,13 +46,20 @@ export default function ShippingPageClient() {
         setAvailablePackages(
           packagesResult.success ? packagesResult.data.filter((pkg) => pkg.status === "available") : [],
         )
+      } catch (error) {
+        console.error("Error loading data:", error)
+        toast({
+          title: "Error",
+          description: "Failed to load shipping data. Please try again.",
+          variant: "destructive",
+        })
       } finally {
         setIsLoading(false)
       }
     }
 
     loadData()
-  }, [])
+  }, [toast])
 
   // Calculate summary statistics
   const totalShipments = shippingData.length
@@ -60,14 +72,14 @@ export default function ShippingPageClient() {
   const inUsePackagesCount = packagesData.filter((p: any) => p.status === "in_use").length
   const damagedPackagesCount = packagesData.filter((p: any) => p.status === "damaged").length
 
-  return (
-    <div className="container mx-auto py-6 space-y-6">
-      <div className="flex justify-between items-center">
+  const renderClassicView = () => (
+    <>
+      <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Shipping & Packages</h1>
         <NewShippingForm availablePackages={availablePackages} />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Shipments</CardTitle>
@@ -152,6 +164,44 @@ export default function ShippingPageClient() {
           {isLoading ? <div>Loading...</div> : <PackagesTable packagesData={packagesData} />}
         </TabsContent>
       </Tabs>
+    </>
+  )
+
+  return (
+    <div className="container mx-auto py-6 space-y-6">
+      {/* View Selector */}
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex space-x-2">
+          <Button
+            variant={activeView === "dashboard" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setActiveView("dashboard")}
+            className="flex items-center gap-1"
+          >
+            <Sparkles className="h-4 w-4" />
+            <span>AI Dashboard</span>
+          </Button>
+          <Button
+            variant={activeView === "classic" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setActiveView("classic")}
+          >
+            Classic View
+          </Button>
+        </div>
+        {activeView === "classic" && <NewShippingForm availablePackages={availablePackages} />}
+      </div>
+
+      {isLoading ? (
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <span className="ml-2">Loading shipping data...</span>
+        </div>
+      ) : activeView === "dashboard" ? (
+        <AIEnhancedShippingDashboard />
+      ) : (
+        renderClassicView()
+      )}
     </div>
   )
 }
