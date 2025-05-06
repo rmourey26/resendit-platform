@@ -21,7 +21,7 @@ function randomDate(start = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000), en
   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toISOString()
 }
 
-// Function to generate random shipping data
+// Update the generateShippingData function to include IoT sensor data
 function generateShippingData() {
   const carriers = ["FedEx", "UPS", "USPS", "DHL", "Amazon Logistics"]
   const statuses = ["delivered", "in_transit", "processing", "delayed", "returned"]
@@ -52,6 +52,191 @@ function generateShippingData() {
       ? new Date(new Date(estimatedDelivery).getTime() + (Math.random() * 4 - 2) * 24 * 60 * 60 * 1000).toISOString()
       : null
 
+  // Generate IoT sensor data
+  const isIoTEnabled = Math.random() > 0.3 // 70% of shipments have IoT sensors
+
+  // Generate location tracking data
+  const generateLocationHistory = () => {
+    const locations = []
+    const startDate = new Date(shippingDate)
+    const endDate = actualDelivery ? new Date(actualDelivery) : new Date(estimatedDelivery)
+    const totalDuration = endDate.getTime() - startDate.getTime()
+
+    // Generate between 5-20 location points
+    const numPoints = Math.floor(Math.random() * 15) + 5
+
+    for (let i = 0; i < numPoints; i++) {
+      const timestamp = new Date(startDate.getTime() + totalDuration * (i / (numPoints - 1))).toISOString()
+
+      // Generate points along a route (simplified)
+      const progress = i / (numPoints - 1)
+      const lat = interpolateCoordinate(
+        getRandomCoordinate(originCountry, "lat"),
+        getRandomCoordinate(destinationCountry, "lat"),
+        progress,
+      )
+      const lng = interpolateCoordinate(
+        getRandomCoordinate(originCountry, "lng"),
+        getRandomCoordinate(destinationCountry, "lng"),
+        progress,
+      )
+
+      locations.push({
+        timestamp,
+        latitude: lat,
+        longitude: lng,
+        accuracy: Math.round(Math.random() * 50) + 5, // 5-55m accuracy
+        facility_type:
+          i === 0
+            ? "origin"
+            : i === numPoints - 1
+              ? "destination"
+              : ["transit_center", "sorting_facility", "customs", "delivery_vehicle"][Math.floor(Math.random() * 4)],
+      })
+    }
+
+    return locations
+  }
+
+  // Generate sensor readings
+  const generateSensorReadings = () => {
+    if (!isIoTEnabled) return null
+
+    const readings = []
+    const startDate = new Date(shippingDate)
+    const endDate = actualDelivery ? new Date(actualDelivery) : new Date(estimatedDelivery)
+    const totalDuration = endDate.getTime() - startDate.getTime()
+
+    // Generate between 20-100 sensor readings
+    const numReadings = Math.floor(Math.random() * 80) + 20
+
+    // Base values and variation ranges for different sensor types
+    const isRefrigerated = Math.random() > 0.7 // 30% are refrigerated
+    const baseTemp = isRefrigerated ? -5 + Math.random() * 10 : 15 + Math.random() * 10
+    const baseHumidity = 40 + Math.random() * 30
+    const basePressure = 1000 + Math.random() * 30
+
+    for (let i = 0; i < numReadings; i++) {
+      const timestamp = new Date(startDate.getTime() + totalDuration * (i / (numReadings - 1))).toISOString()
+
+      // Add some random variation to readings
+      const tempVariation = (Math.random() * 2 - 1) * (isRefrigerated ? 2 : 5)
+      const humidityVariation = (Math.random() * 2 - 1) * 10
+      const pressureVariation = (Math.random() * 2 - 1) * 5
+
+      // Occasionally add a shock event
+      const hasShockEvent = Math.random() > 0.9 // 10% chance of shock event
+
+      readings.push({
+        timestamp,
+        temperature: {
+          value: baseTemp + tempVariation,
+          unit: "celsius",
+        },
+        humidity: {
+          value: baseHumidity + humidityVariation,
+          unit: "percent",
+        },
+        pressure: {
+          value: basePressure + pressureVariation,
+          unit: "hPa",
+        },
+        shock: {
+          value: hasShockEvent ? 5 + Math.random() * 15 : Math.random() * 2,
+          unit: "g",
+        },
+        light: {
+          value: Math.random() * 1000,
+          unit: "lux",
+        },
+        battery: {
+          value: 100 - (i / numReadings) * (20 + Math.random() * 30), // Battery decreases over time
+          unit: "percent",
+        },
+      })
+    }
+
+    return readings
+  }
+
+  // Helper functions for location generation
+  function getRandomCoordinate(country, type) {
+    // Simplified country coordinate ranges
+    const coordinates = {
+      US: { lat: [25, 48], lng: [-125, -70] },
+      CA: { lat: [43, 60], lng: [-130, -60] },
+      UK: { lat: [50, 58], lng: [-8, 2] },
+      DE: { lat: [47, 55], lng: [6, 15] },
+      FR: { lat: [42, 51], lng: [-5, 8] },
+      JP: { lat: [30, 45], lng: [130, 145] },
+      AU: { lat: [-43, -10], lng: [113, 153] },
+    }
+
+    const range = coordinates[country][type]
+    return range[0] + Math.random() * (range[1] - range[0])
+  }
+
+  function interpolateCoordinate(start, end, progress) {
+    return start + (end - start) * progress
+  }
+
+  // Generate IoT data
+  const isRefrigerated = Math.random() > 0.7 // 30% are refrigerated
+  const iotData = isIoTEnabled
+    ? {
+        device_id: `IOT-${Math.floor(Math.random() * 1000000)}`,
+        sensor_type: ["basic", "advanced", "premium"][Math.floor(Math.random() * 3)],
+        location_tracking: generateLocationHistory(),
+        sensor_readings: generateSensorReadings(),
+        alerts: [],
+        is_refrigerated: isRefrigerated,
+      }
+    : null
+
+  // Generate alerts based on sensor readings
+  if (iotData && iotData.sensor_readings) {
+    // Check for temperature excursions
+    const tempReadings = iotData.sensor_readings.map((r) => r.temperature.value)
+    const maxTemp = Math.max(...tempReadings)
+    const minTemp = Math.min(...tempReadings)
+
+    if (iotData.is_refrigerated && maxTemp > 8) {
+      iotData.alerts.push({
+        type: "temperature_excursion",
+        severity: "high",
+        timestamp: iotData.sensor_readings.find((r) => r.temperature.value === maxTemp).timestamp,
+        message: `Temperature exceeded safe range: ${maxTemp.toFixed(1)}°C`,
+        threshold: 8,
+      })
+    }
+
+    // Check for shock events
+    const shockEvents = iotData.sensor_readings.filter((r) => r.shock.value > 5)
+    if (shockEvents.length > 0) {
+      shockEvents.forEach((event) => {
+        iotData.alerts.push({
+          type: "impact_detected",
+          severity: event.shock.value > 10 ? "high" : "medium",
+          timestamp: event.timestamp,
+          message: `Impact of ${event.shock.value.toFixed(1)}g detected`,
+          threshold: 5,
+        })
+      })
+    }
+
+    // Check for battery issues
+    const lastReading = iotData.sensor_readings[iotData.sensor_readings.length - 1]
+    if (lastReading.battery.value < 20) {
+      iotData.alerts.push({
+        type: "low_battery",
+        severity: "low",
+        timestamp: lastReading.timestamp,
+        message: `Low battery: ${lastReading.battery.value.toFixed(1)}%`,
+        threshold: 20,
+      })
+    }
+  }
+
   return {
     tracking_number: trackingNumber,
     status,
@@ -79,12 +264,13 @@ function generateShippingData() {
       zip: `${Math.floor(Math.random() * 99999) + 10000}`,
       country: destinationCountry,
     },
+    iot_data: iotData,
   }
 }
 
-// Function to create a text description of the shipping data for embedding
+// Update the createShippingDescription function to include IoT sensor data
 function createShippingDescription(shippingData: any): string {
-  return `
+  let description = `
     Tracking Number: ${shippingData.tracking_number}
     Status: ${shippingData.status}
     Carrier: ${shippingData.carrier}
@@ -97,6 +283,61 @@ function createShippingDescription(shippingData: any): string {
     Estimated Delivery: ${shippingData.estimated_delivery}
     ${shippingData.actual_delivery ? `Actual Delivery: ${shippingData.actual_delivery}` : ""}
   `.trim()
+
+  // Add IoT data if available
+  if (shippingData.iot_data) {
+    description += `\n    IoT Device ID: ${shippingData.iot_data.device_id}`
+    description += `\n    Sensor Type: ${shippingData.iot_data.sensor_type}`
+
+    if (shippingData.iot_data.is_refrigerated) {
+      description += `\n    Refrigerated Shipment: Yes`
+    }
+
+    // Add location tracking summary
+    if (shippingData.iot_data.location_tracking && shippingData.iot_data.location_tracking.length > 0) {
+      description += `\n    Location Tracking: ${shippingData.iot_data.location_tracking.length} points recorded`
+
+      // Add the last known location
+      const lastLocation = shippingData.iot_data.location_tracking[shippingData.iot_data.location_tracking.length - 1]
+      description += `\n    Last Location: Lat ${lastLocation.latitude.toFixed(4)}, Lng ${lastLocation.longitude.toFixed(4)} at ${lastLocation.timestamp}`
+    }
+
+    // Add sensor readings summary
+    if (shippingData.iot_data.sensor_readings && shippingData.iot_data.sensor_readings.length > 0) {
+      const readings = shippingData.iot_data.sensor_readings
+
+      // Calculate min, max, avg temperature
+      const temperatures = readings.map((r) => r.temperature.value)
+      const minTemp = Math.min(...temperatures)
+      const maxTemp = Math.max(...temperatures)
+      const avgTemp = temperatures.reduce((sum, val) => sum + val, 0) / temperatures.length
+
+      description += `\n    Temperature Range: ${minTemp.toFixed(1)}°C to ${maxTemp.toFixed(1)}°C (avg: ${avgTemp.toFixed(1)}°C)`
+
+      // Add humidity info
+      const humidities = readings.map((r) => r.humidity.value)
+      const avgHumidity = humidities.reduce((sum, val) => sum + val, 0) / humidities.length
+      description += `\n    Average Humidity: ${avgHumidity.toFixed(1)}%`
+
+      // Add shock events
+      const shockEvents = readings.filter((r) => r.shock.value > 5)
+      if (shockEvents.length > 0) {
+        description += `\n    Shock Events: ${shockEvents.length} detected`
+        const maxShock = Math.max(...shockEvents.map((r) => r.shock.value))
+        description += `\n    Maximum Impact: ${maxShock.toFixed(1)}g`
+      }
+    }
+
+    // Add alerts
+    if (shippingData.iot_data.alerts && shippingData.iot_data.alerts.length > 0) {
+      description += `\n    Alerts: ${shippingData.iot_data.alerts.length} detected`
+      shippingData.iot_data.alerts.forEach((alert) => {
+        description += `\n    - ${alert.type} (${alert.severity}): ${alert.message}`
+      })
+    }
+  }
+
+  return description
 }
 
 // Main function to seed the database

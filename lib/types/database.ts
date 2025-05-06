@@ -170,6 +170,60 @@ export interface Shipping {
   created_at: string
   updated_at: string
   public_id: string
+  iot_data?: IoTData | null
+}
+
+export interface IoTData {
+  device_id: string
+  sensor_type: string
+  is_refrigerated: boolean
+  location_tracking: LocationPoint[]
+  sensor_readings: SensorReading[]
+  alerts: SensorAlert[]
+}
+
+export interface LocationPoint {
+  timestamp: string
+  latitude: number
+  longitude: number
+  accuracy: number
+  facility_type: string
+}
+
+export interface SensorReading {
+  timestamp: string
+  temperature: {
+    value: number
+    unit: string
+  }
+  humidity: {
+    value: number
+    unit: string
+  }
+  pressure: {
+    value: number
+    unit: string
+  }
+  shock: {
+    value: number
+    unit: string
+  }
+  light: {
+    value: number
+    unit: string
+  }
+  battery: {
+    value: number
+    unit: string
+  }
+}
+
+export interface SensorAlert {
+  type: string
+  severity: string
+  timestamp: string
+  message: string
+  threshold: number
 }
 
 export interface AIAnalysisResult {

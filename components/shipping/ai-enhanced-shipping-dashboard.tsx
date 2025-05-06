@@ -21,6 +21,7 @@ import {
 } from "@/app/actions/shipping"
 import { optimizeSupplyChain } from "@/app/actions/ai-actions"
 import { useToast } from "@/components/ui/use-toast"
+import { IoTSensorAnalytics } from "./iot-sensor-analytics"
 
 // interface AIEnhancedShippingDashboardProps {
 //   shippingData: any[]
@@ -298,6 +299,10 @@ export function AIEnhancedShippingDashboard() {
             </p>
           </CardContent>
         </Card>
+      </div>
+      {/* Add this component to the dashboard layout */}
+      <div className="col-span-1 lg:col-span-2">
+        <IoTSensorAnalytics shipmentData={shippingData} isLoading={loading} />
       </div>
 
       <Tabs defaultValue="overview" className="space-y-4">

@@ -13,7 +13,6 @@ import { Label } from "@/components/ui/label"
 import { createClient } from "@/lib/supabase"
 import { useToast } from "@/components/ui/use-toast"
 
-
 export default function LoginPage() {
   const router = useRouter()
   const { toast } = useToast()
@@ -90,8 +89,6 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-    
-
       <div className="flex flex-1 items-center justify-center bg-gray-50 p-4 dark:bg-gray-900">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -134,12 +131,19 @@ export default function LoginPage() {
                 <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading ? "Logging in..." : "Log in"}
                 </Button>
-                <p className="text-sm text-gray-500">
-                  Don't have an account?{" "}
-                  <Link href="/signup" className="text-blue-500 hover:underline">
-                    Sign up
-                  </Link>
-                </p>
+                <div className="flex flex-col space-y-2 text-center text-sm">
+                  <p className="text-gray-500">
+                    Don't have an account?{" "}
+                    <Link href="/signup" className="text-blue-500 hover:underline">
+                      Sign up
+                    </Link>
+                  </p>
+                  <p className="text-gray-500">
+                    <Link href="/forgot-password" className="text-blue-500 hover:underline">
+                      Forgot password?
+                    </Link>
+                  </p>
+                </div>
               </CardFooter>
             </form>
           </Card>

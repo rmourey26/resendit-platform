@@ -54,7 +54,17 @@ export function SiteHeader() {
         { title: "Dashboard", href: "/dashboard" },
         { title: "CRM", href: "/admin/crm" },
         { title: "AI Suite", href: "/ai-suite" },
+        {
+        title:
+        "Packaging",
+        href:
+        "/packaging" },
         { title: "Shipping", href: "/shipping" },
+        {
+        title:
+        "Sustainability",
+        href:
+        "/sustainability" }
       ]
     : [
         { title: "Login", href: "/login" },

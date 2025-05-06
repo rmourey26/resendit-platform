@@ -211,4 +211,14 @@ export class EmbeddingSystem {
 
     return data[0]
   }
+
+  // Generate embedding for a single text input
+  async generateEmbedding(text: string): Promise<number[]> {
+    const embeddingResponse = await this.aiClient.createEmbedding({
+      model: this.embeddingModel,
+      input: text,
+    })
+
+    return embeddingResponse.data[0].embedding
+  }
 }

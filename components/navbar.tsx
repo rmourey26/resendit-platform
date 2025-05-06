@@ -28,6 +28,11 @@ export function Navbar({ showAuth = true, isLoggedIn = false }: NavbarProps) {
   const navItems = [
     { label: "Features", href: "/#features" },
     { label: "About", href: "/about" },
+    {
+      label: "Sustainability",
+      href: "/sustainability",
+      // icon: <Leaf className="h-5 w-5" />, // Corrected: No icon property in the original code's mapping
+    },
   ]
 
   const authItems = isLoggedIn

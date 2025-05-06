@@ -73,7 +73,8 @@
     "next-transpile-modules": "latest",
     "qrcode.react": "latest",
     "react-qr-code": "latest",
-    "react-colorful": "latest"
+    "react-colorful": "latest",
+    "resend": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",

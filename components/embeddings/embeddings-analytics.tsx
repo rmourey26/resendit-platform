@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
-import { BarChart, LineChart, PieChart, BarChart2, LineChartIcon, PieChartIcon } from "lucide-react"
+import { BarChart, LineChart, PieChart, BarChart2 } from "lucide-react"
 import type { DataEmbedding } from "@/lib/types/database"
 
 interface EmbeddingsAnalyticsProps {
@@ -75,15 +75,15 @@ export function EmbeddingsAnalytics({ userId, embeddings }: EmbeddingsAnalyticsP
         <Tabs defaultValue="usage">
           <TabsList className="grid w-full grid-cols-3 mb-6">
             <TabsTrigger value="usage" className="flex items-center gap-2">
-              <BarChartIcon className="h-4 w-4" />
+              <BarChart className="h-4 w-4" />
               <span>Usage</span>
             </TabsTrigger>
             <TabsTrigger value="performance" className="flex items-center gap-2">
-              <LineChartIcon className="h-4 w-4" />
+              <LineChart className="h-4 w-4" />
               <span>Performance</span>
             </TabsTrigger>
             <TabsTrigger value="distribution" className="flex items-center gap-2">
-              <PieChartIcon className="h-4 w-4" />
+              <PieChart className="h-4 w-4" />
               <span>Distribution</span>
             </TabsTrigger>
           </TabsList>
