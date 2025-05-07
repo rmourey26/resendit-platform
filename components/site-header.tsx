@@ -53,12 +53,13 @@ export function SiteHeader() {
   const authNavItems = user
     ? [
         { title: "Dashboard", href: "/dashboard" },
+        { title: "API Docs", href: "/api-docs" },
         { title: "CRM", href: "/admin/crm" },
         { title: "AI Suite", href: "/ai-suite" },
-        { title:"Packaging", href: "/packaging" },
+        { title: "Packaging", href: "/packaging" },
         { title: "Shipping", href: "/shipping" },
-        { title: "Sustainability", href: "/sustainability" },
-        { title: "API Docs", href: "/api-docs" }
+        { title: "Sustainability", href: "/sustainability" }
+
       ]
     : [
         { title: "Login", href: "/login" },
