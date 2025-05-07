@@ -47,6 +47,7 @@ export function SiteHeader() {
     { title: "Home", href: "/" },
     { title: "Features", href: "/#features" },
     { title: "About", href: "/about" },
+    { title: "API Docs", href: "/api-docs" }
   ]
 
   const authNavItems = user
@@ -57,7 +58,7 @@ export function SiteHeader() {
         { title:"Packaging", href: "/packaging" },
         { title: "Shipping", href: "/shipping" },
         { title: "Sustainability", href: "/sustainability" },
-        { title: "Track", href: "/track" }
+        { title: "API Docs", href: "/api-docs" }
       ]
     : [
         { title: "Login", href: "/login" },
