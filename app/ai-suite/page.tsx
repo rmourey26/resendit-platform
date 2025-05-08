@@ -1,7 +1,7 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { Navbar } from "@/components/navbar"
-import { AISuiteClient } from "./ai-suite-client"
+import { AISuiteClient } from "@/components/ai-suite/ai-suite-client"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
