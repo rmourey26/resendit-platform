@@ -4,11 +4,12 @@ import { Toaster } from "@/components/ui/toaster"
 import { Footer } from "@/components/footer"
 import { SiteHeader } from "@/components/site-header"
 import "./globals.css"
+import { SessionRefresh } from "@/components/session-refresh" // Add the SessionRefresh import at the top of the file
 
 export const metadata: Metadata = {
   title: "Resend-It",
   description: "Smart reusable packaging as a service powered by Multi-Context AI and blockchain technologies",
-  generator: "platform.resend-it.com",
+  generator: "v0.dev",
   manifest: "/manifest",
   applicationName: "Resend-It",
   appleWebApp: {
@@ -62,6 +63,8 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen flex flex-col">
         <SiteHeader />
+        <SessionRefresh />{" "}
+        {/* Inside the RootLayout component, add the SessionRefresh component right after the <Providers> component */}
         <div className="flex-grow">{children}</div>
         <Footer />
         <Toaster />

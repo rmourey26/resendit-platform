@@ -4,7 +4,8 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Resend-It",
     short_name: "Resend-It",
-    description: "Pioneering reusable smart packaging platform powered by cutting-edge multi-context AI and secure blockchain technology for sustainable business growth",
+    description:
+      "Pioneering reusable smart packaging platform powered by cutting-edge Multi-Context AI and secure blockchain technology",
     start_url: "/",
     display: "standalone",
     background_color: "#000000",

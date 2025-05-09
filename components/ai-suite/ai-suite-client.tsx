@@ -9,8 +9,7 @@ import { AIChat } from "@/components/ai-suite/ai-chat"
 import { AICodeGenerator } from "@/components/ai-suite/ai-code-generator"
 import { AISupplyChainOptimizer } from "@/components/ai-suite/ai-supply-chain-optimizer"
 import type { AIModel } from "@/lib/types/database"
-import { Database, Code, MessageSquare, Bot, ListChecks, Package, Sparkles } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Code, MessageSquare, Bot, ListChecks, Package, Sparkles } from "lucide-react"
 
 interface AISuiteClientProps {
   user: any
@@ -51,10 +50,6 @@ export function AISuiteClient({ user, aiModels, aiAgents, workflows }: AISuiteCl
               <ListChecks className="h-4 w-4 mr-2" />
               Workflows
             </TabsTrigger>
-            <TabsTrigger value="embeddings" className="xs:text-xs md:text-sm">
-            <Database className="h-4 w-4 md:mr-2" />
-              Embeddings
-          </TabsTrigger>
           </div>
           <div className="sm:hidden flex justify-between items-center w-full px-1">
             <TabsTrigger value="chat" className="flex flex-col items-center justify-center p-2" title="AI Chat">
@@ -85,10 +80,6 @@ export function AISuiteClient({ user, aiModels, aiAgents, workflows }: AISuiteCl
               <ListChecks className="h-5 w-5" />
               <span className="text-[0.6rem] mt-1">Flows</span>
             </TabsTrigger>
-            <TabsTrigger value="embeddings" className="flex flex-col items-center justify-center p-2" title="Embeddings">
-              <Database className="h-5 w-5" />
-              <span className="text-[0.6rem] mt-1">Embeddings</span>
-            </TabsTrigger>
           </div>
         </TabsList>
 
@@ -115,20 +106,7 @@ export function AISuiteClient({ user, aiModels, aiAgents, workflows }: AISuiteCl
         <TabsContent value="workflows" className="py-4">
           <AIWorkflowsList workflows={workflows} user={user} />
         </TabsContent>
-       <TabsContent value="embeddings" className="py-4">
-          <div className="flex flex-col items-center justify-center p-8 border rounded-lg">
-            <Database className="h-12 w-12 mb-4 text-muted-foreground" />
-            <h3 className="text-lg font-medium mb-2">Manage Embeddings</h3>
-            <p className="text-sm text-muted-foreground text-center mb-4">
-              Upload documents, manage embeddings, and configure RAG settings
-            </p>
-            <Button asChild>
-              <a href="/ai-suite/embeddings">Open Embeddings Manager</a>
-            </Button>
-          </div>
-        </TabsContent>
       </Tabs>
     </div>
   )
 }
-

@@ -29,6 +29,12 @@ export function createServerSupabaseClient() {
           }
         },
       },
+      // Add auto refresh token option
+      auth: {
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true,
+      },
     })
   } catch (error) {
     console.error("Error creating Supabase client:", error)
@@ -36,6 +42,7 @@ export function createServerSupabaseClient() {
     return {
       auth: {
         getUser: async () => ({ data: { user: null }, error: null }),
+        getSession: async () => ({ data: { session: null }, error: null }),
       },
     } as any
   }

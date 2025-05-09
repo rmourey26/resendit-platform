@@ -3,7 +3,7 @@ import SignupPageClient from "./pageClient"
 
 export const metadata: Metadata = {
   title: "Sign Up - Resend-It",
-  description: "Create your account to start generating digital business cards",
+  description: "Create your account to start optimizing your business",
 }
 
 export default async function SignupPage() {

@@ -9,7 +9,7 @@ import { AIChat } from "@/components/ai-suite/ai-chat"
 import { AICodeGenerator } from "@/components/ai-suite/ai-code-generator"
 import { AISupplyChainOptimizer } from "@/components/ai-suite/ai-supply-chain-optimizer"
 import type { AIModel } from "@/lib/types/database"
-import { Database, MessageSquare, Code, Truck, Cpu, GitBranch, BarChart } from "lucide-react"
+import { Database, MessageSquare, Code, Truck, Cpu, GitBranch, BarChart, Bot } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 interface AISuiteClientProps {
@@ -27,38 +27,73 @@ export function AISuiteClient({ user, aiModels, aiAgents, workflows }: AISuiteCl
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
-        orientation="horizontal"
-        className="w-full flex flex-col md:flex-row items-start justify-center gap-2"
+        className="w-full flex flex-col"
       >
-        <TabsList className="grid grid-cols-1 h-auto w-fit p-0 divide-y border shrink-0">
-          <TabsTrigger value="chat" className="flex items-center justify-center">
+        <TabsList className="w-full flex flex-row justify-between mb-4 overflow-x-auto">
+           <div className="hidden sm:flex space-x-2 mx-auto">
+          <TabsTrigger value="chat" className="xs:text:xs text-sm">
             <MessageSquare className="h-4 w-4 md:mr-2" />
             <span className="hidden md:inline">AI Chat</span>
           </TabsTrigger>
-          <TabsTrigger value="code" className="flex items-center justify-center">
+          <TabsTrigger value="code" className="xs:text:xs text-sm">
             <Code className="h-4 w-4 md:mr-2" />
             <span className="hidden md:inline">Code Generator</span>
           </TabsTrigger>
-          <TabsTrigger value="supply-chain" className="flex items-center justify-center">
+          <TabsTrigger value="supply-chain" className="xs:text:xs text-sm">
             <Truck className="h-4 w-4 md:mr-2" />
             <span className="hidden md:inline">Supply Chain</span>
           </TabsTrigger>
-          <TabsTrigger value="models" className="flex items-center justify-center">
+          <TabsTrigger value="models" className="xs:text:xs text-sm">
             <Cpu className="h-4 w-4 md:mr-2" />
             <span className="hidden md:inline">AI Models</span>
           </TabsTrigger>
-          <TabsTrigger value="agents" className="flex items-center justify-center">
-            <BarChart className="h-4 w-4 md:mr-2" />
+          <TabsTrigger value="agents" className="xs:text:xs text-sm">
+            <Bot className="h-4 w-4 md:mr-2" />
             <span className="hidden md:inline">AI Agents</span>
           </TabsTrigger>
-          <TabsTrigger value="workflows" className="flex items-center justify-center">
+          <TabsTrigger value="workflows" className="xs:text:xs text-sm">
             <GitBranch className="h-4 w-4 md:mr-2" />
             <span className="hidden md:inline">Workflows</span>
           </TabsTrigger>
-          <TabsTrigger value="embeddings" className="flex items-center justify-center">
+          <TabsTrigger value="embeddings" className="xs:text:xs text-sm">
             <Database className="h-4 w-4 md:mr-2" />
             <span className="hidden md:inline">Embeddings</span>
           </TabsTrigger>
+          </div>
+          <div className="sm:hidden flex justify-between items-center w-full px-1">
+            <TabsTrigger value="chat" className="flex flex-col items-center justify-center p-2" title="AI Chat">
+              <MessageSquare className="h-5 w-5" />
+              <span className="text-[0.6rem] mt-1">Chat</span>
+            </TabsTrigger>
+            <TabsTrigger value="code" className="flex flex-col items-center justify-center p-2" title="Code Generator">
+              <Code className="h-5 w-5" />
+              <span className="text-[0.6rem] mt-1">Code</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="supply-chain"
+              className="flex flex-col items-center justify-center p-2"
+              title="Supply Chain"
+            >
+              <Truck className="h-5 w-5" />
+              <span className="text-[0.6rem] mt-1">Supply</span>
+            </TabsTrigger>
+            <TabsTrigger value="models" className="flex flex-col items-center justify-center p-2" title="AI Models">
+              <Cpu className="h-5 w-5" />
+              <span className="text-[0.6rem] mt-1">Models</span>
+            </TabsTrigger>
+            <TabsTrigger value="agents" className="flex flex-col items-center justify-center p-2" title="AI Agents">
+              <Bot className="h-5 w-5" />
+              <span className="text-[0.6rem] mt-1">Agents</span>
+            </TabsTrigger>
+            <TabsTrigger value="workflows" className="flex flex-col items-center justify-center p-2" title="Workflows">
+              <GitBranch className="h-5 w-5" />
+              <span className="text-[0.6rem] mt-1">Flows</span>
+            </TabsTrigger>
+             <TabsTrigger value="embeddings" className="flex flex-col items-center justify-center p-2" title="Embeddings">
+              <Database className="h-5 w-5" />
+              <span className="text-[0.6rem] mt-1">Embeddings</span>
+            </TabsTrigger>
+          </div>
         </TabsList>
 
         <TabsContent value="chat" className="py-4">

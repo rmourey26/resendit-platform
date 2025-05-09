@@ -1,7 +1,7 @@
 {
-  "name": "Resend-It Platform - The Business Optimization Engine",
-  "short_name": "Resend-It Platform",
-  "description": "",
+  "name": "Resend-It - Optimization Engine",
+  "short_name": "Resend-It",
+  "description": "Pioneering smart reusable packaging powered by multi-context AI and blockchain technologies ",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

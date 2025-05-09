@@ -47,19 +47,24 @@ export function SiteHeader() {
     { title: "Home", href: "/" },
     { title: "Features", href: "/#features" },
     { title: "About", href: "/about" },
-    { title: "API Docs", href: "/api-docs" }
   ]
 
   const authNavItems = user
     ? [
         { title: "Dashboard", href: "/dashboard" },
-        { title: "API Docs", href: "/api-docs" },
         { title: "CRM", href: "/admin/crm" },
         { title: "AI Suite", href: "/ai-suite" },
-        { title: "Packaging", href: "/packaging" },
+        {
+        title:
+        "Packaging",
+        href:
+        "/packaging" },
         { title: "Shipping", href: "/shipping" },
-        { title: "Sustainability", href: "/sustainability" }
-
+        {
+        title:
+        "Sustainability",
+        href:
+        "/sustainability" }
       ]
     : [
         { title: "Login", href: "/login" },
@@ -75,7 +80,7 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-green-500/20">
-      <div className="container flex h-14 items-center justify-between px-4 md:px-6">
+      <div className="container flex h-16 items-center justify-between px-4 md:px-6">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2">
             <Image src="https://quantumone.b-cdn.net/resendit/resend-it-svg.svg" alt="Resend-It Logo" className="h-5 w-18 fill-currentColor" />

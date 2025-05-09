@@ -36,50 +36,74 @@ export async function middleware(request: NextRequest) {
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
-      cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value
-        },
-        set(name: string, value: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value,
-            ...options,
-          })
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          })
-          response.cookies.set({
-            name,
-            value,
-            ...options,
-          })
-        },
-        remove(name: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value: '',
-            ...options,
-          })
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          })
-          response.cookies.set({
-            name,
-            value: '',
-            ...options,
-          })
+        cookies: {
+          get(name: string) {
+            return request.cookies.get(name)?.value
+          },
+          set(name: string, value: string, options: CookieOptions) {
+            request.cookies.set({
+              name,
+              value,
+              ...options,
+            })
+            response = NextResponse.next({
+              request: {
+                headers: request.headers,
+              },
+            })
+            response.cookies.set({
+              name,
+              value,
+              ...options,
+            })
+          },
+          remove(name: string, options: CookieOptions) {
+            request.cookies.set({
+              name,
+              value: "",
+              ...options,
+            })
+            response = NextResponse.next({
+              request: {
+                headers: request.headers,
+              },
+            })
+            response.cookies.set({
+              name,
+              value: "",
+              ...options,
+            })
+          },
         },
       },
+    )
+
+    // Try to get the user session
+    const {
+      data: { session },
+      error: sessionError,
+    } = await supabase.auth.getSession()
+
+    // If there's a session error or no session, redirect to login
+    if (sessionError || !session) {
+      // Clear any invalid cookies
+      const authCookies = ["sb-access-token", "sb-refresh-token"]
+      authCookies.forEach((cookieName) => {
+        if (request.cookies.get(cookieName)) {
+          response.cookies.set({
+            name: cookieName,
+            value: "",
+            expires: new Date(0),
+            path: "/",
+          })
+        }
+      })
+
+      return NextResponse.redirect(new URL("/login", request.url))
     }
-  )
-  const {
-      data: { user },
-    } = await supabase.auth.getUser()
+
+    // Get user from session
+    const { user } = session
 
     // If user is not authenticated, redirect to login
     if (!user) {
@@ -93,7 +117,6 @@ export async function middleware(request: NextRequest) {
   }
 }
 
-  
 export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 }
