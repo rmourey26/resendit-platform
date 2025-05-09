@@ -63,11 +63,11 @@ export function AISuiteClient({ user, aiModels, aiAgents, workflows }: AISuiteCl
           <div className="sm:hidden flex justify-between items-center w-full px-1">
             <TabsTrigger value="chat" className="flex flex-col items-center justify-center p-2" title="AI Chat">
               <MessageSquare className="h-4 w-4" />
-              <span className="text-[0.6rem] mt-1">Chat</span>
+              <span className="text-[0.5rem] mt-1">Chat</span>
             </TabsTrigger>
             <TabsTrigger value="code" className="flex flex-col items-center justify-center p-2" title="Code Generator">
               <Code className="h-4 w-4" />
-              <span className="text-[0.6rem] mt-1">Code</span>
+              <span className="text-[0.5rem] mt-1">Code</span>
             </TabsTrigger>
             <TabsTrigger
               value="supply-chain"
