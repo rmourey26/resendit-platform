@@ -3,6 +3,7 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import { v4 as uuidv4 } from "uuid"
 import { revalidatePath } from "next/cache"
+import { canSeedEmbeddings } from "@/lib/permissions"
 
 // Function to generate a random embedding vector with 1536 dimensions
 function generateRandomEmbedding(dimensions = 1536): number[] {
@@ -341,7 +342,24 @@ function createShippingDescription(shippingData: any): string {
 }
 
 // Server action to seed the database with mock shipment embeddings
-export async function seedShipmentEmbeddings(userId: string, count = 50) {
+export async function seedShipmentEmbeddings(userId: string, count = 50, checkOnly = false) {
+  // Check if the user has permission to seed embeddings
+  const hasPermission = canSeedEmbeddings(userId)
+
+  // If this is just a permission check, return the result
+  if (checkOnly) {
+    return { hasPermission }
+  }
+
+  // If the user doesn't have permission, return an error
+  if (!hasPermission) {
+    return {
+      success: false,
+      message: "You don't have permission to seed embeddings.",
+      count: 0,
+    }
+  }
+
   const supabase = createServerSupabaseClient()
 
   console.log(`Starting to seed ${count} shipment embeddings for user ${userId}...`)
@@ -382,5 +400,5 @@ export async function seedShipmentEmbeddings(userId: string, count = 50) {
   }
 
   revalidatePath("/ai-suite/embeddings")
-  return { success: true, count }
+  return { success: true, count, hasPermission: true }
 }
