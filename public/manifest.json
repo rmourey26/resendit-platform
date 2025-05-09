@@ -1,7 +1,7 @@
 {
   "name": "Resend-It - Optimization Engine",
   "short_name": "Resend-It",
-  "description": "Pioneering smart reusable packaging powered by multi-context AI and blockchain technologies ",
+  "description": "Pioneering next gen business optimization systems with a secure AI network and sustainable, high throughput blockchain technology.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -61,15 +61,15 @@
     {
       "name": "Dashboard",
       "short_name": "Dashboard",
-      "description": "View your business cards",
+      "description": "View your digital profile",
       "url": "/dashboard",
       "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
     },
     {
-      "name": "Create Card",
-      "short_name": "Create",
-      "description": "Create a new business card",
-      "url": "/dashboard?action=create",
+      "name": "AI Business Suite",
+      "short_name": "AI Suite",
+      "description": "Exponential ROI",
+      "url": "/ai-suite",
       "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
     }
   ],
