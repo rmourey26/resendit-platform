@@ -62,11 +62,11 @@ export function AISuiteClient({ user, aiModels, aiAgents, workflows }: AISuiteCl
           </div>
           <div className="sm:hidden flex justify-between items-center w-full px-1">
             <TabsTrigger value="chat" className="flex flex-col items-center justify-center p-2" title="AI Chat">
-              <MessageSquare className="h-5 w-5" />
+              <MessageSquare className="h-4 w-4" />
               <span className="text-[0.6rem] mt-1">Chat</span>
             </TabsTrigger>
             <TabsTrigger value="code" className="flex flex-col items-center justify-center p-2" title="Code Generator">
-              <Code className="h-5 w-5" />
+              <Code className="h-4 w-4" />
               <span className="text-[0.6rem] mt-1">Code</span>
             </TabsTrigger>
             <TabsTrigger
@@ -74,24 +74,24 @@ export function AISuiteClient({ user, aiModels, aiAgents, workflows }: AISuiteCl
               className="flex flex-col items-center justify-center p-2"
               title="Supply Chain"
             >
-              <Truck className="h-5 w-5" />
-              <span className="text-[0.6rem] mt-1">Supply</span>
+              <Truck className="h-4 w-4" />
+              <span className="text-[0.5rem] mt-1">Supply</span>
             </TabsTrigger>
             <TabsTrigger value="models" className="flex flex-col items-center justify-center p-2" title="AI Models">
-              <Cpu className="h-5 w-5" />
-              <span className="text-[0.6rem] mt-1">Models</span>
+              <Cpu className="h-4 w-4" />
+              <span className="text-[0.5rem] mt-1">Models</span>
             </TabsTrigger>
             <TabsTrigger value="agents" className="flex flex-col items-center justify-center p-2" title="AI Agents">
-              <Bot className="h-5 w-5" />
-              <span className="text-[0.6rem] mt-1">Agents</span>
+              <Bot className="h-4 w-4" />
+              <span className="text-[0.5rem] mt-1">Agents</span>
             </TabsTrigger>
             <TabsTrigger value="workflows" className="flex flex-col items-center justify-center p-2" title="Workflows">
-              <GitBranch className="h-5 w-5" />
-              <span className="text-[0.6rem] mt-1">Flows</span>
+              <GitBranch className="h-4 w-4" />
+              <span className="text-[0.5rem] mt-1">Flows</span>
             </TabsTrigger>
              <TabsTrigger value="embeddings" className="flex flex-col items-center justify-center p-2" title="Embeddings">
-              <Database className="h-5 w-5" />
-              <span className="text-[0.6rem] mt-1">Embeddings</span>
+              <Database className="h-4 w-4" />
+              <span className="text-[0.5rem] mt-1">Embeddings</span>
             </TabsTrigger>
           </div>
         </TabsList>
