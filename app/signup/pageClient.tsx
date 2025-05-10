@@ -92,7 +92,7 @@ export default function SignupPageClient() {
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl">Create your account</CardTitle>
-              <CardDescription>Enter your information to create your digital business card</CardDescription>
+              <CardDescription>Utilize image URLs during test phase</CardDescription>
             </CardHeader>
             <form onSubmit={handleSubmit}>
               <CardContent className="space-y-4">
