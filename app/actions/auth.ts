@@ -26,6 +26,17 @@ export async function signUp(formData: z.infer<typeof signUpSchema>) {
 
     const supabase = await createServerClientForSSR()
 
+    // First check if the user already exists
+    const { data: existingUser } = await supabase.auth.signInWithPassword({
+      email: validatedData.email,
+      password: validatedData.password,
+    })
+
+    if (existingUser?.user) {
+      return { success: false, message: "An account with this email already exists. Please log in instead." }
+    }
+
+    // If user doesn't exist, create a new account
     const { data, error } = await supabase.auth.signUp({
       email: validatedData.email,
       password: validatedData.password,
@@ -46,6 +57,22 @@ export async function signUp(formData: z.infer<typeof signUpSchema>) {
 
     // Create a profile record immediately after signup
     try {
+      // First check if profile already exists
+      const { data: existingProfile } = await supabase
+        .from("profiles")
+        .select("id")
+        .eq("user_id", data.user?.id)
+        .single()
+
+      if (existingProfile) {
+        console.log("Profile already exists, skipping creation")
+        return { success: true, message: "Account created successfully" }
+      }
+
+      // Generate a username based on full name
+      const username = validatedData.full_name.toLowerCase().replace(/\s+/g, "_")
+
+      // Create the profile
       const { error: profileError } = await supabase.from("profiles").insert({
         id: data.user?.id,
         user_id: data.user?.id,
@@ -57,11 +84,18 @@ export async function signUp(formData: z.infer<typeof signUpSchema>) {
         linkedin_url: linkedinUrl || "",
         avatar_url: validatedData.avatar_url || "",
         company_logo_url: validatedData.company_logo_url || "",
-        username: validatedData.full_name.toLowerCase().replace(/\s+/g, "_"),
+        username: username,
         updated_at: new Date().toISOString(),
       })
 
       if (profileError) {
+        // If the error is a duplicate key constraint, the profile already exists
+        if (profileError.code === "23505") {
+          // PostgreSQL duplicate key error code
+          console.log("Profile already exists (constraint violation), continuing")
+          return { success: true, message: "Account created successfully" }
+        }
+
         console.error("Error creating profile:", profileError)
         // Continue even if profile creation fails, as it will be created later
       }
