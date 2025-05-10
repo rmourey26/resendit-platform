@@ -80,7 +80,7 @@ export default function SignupPageClient() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar showAuth={false} />
+ 
 
       <div className="flex flex-1 items-center justify-center bg-gray-50 p-4 dark:bg-gray-900">
         <motion.div
