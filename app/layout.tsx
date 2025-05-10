@@ -1,15 +1,16 @@
+import { SessionRefresh } from "@/components/session-refresh"
+import { ClientProviders } from "@/components/client-providers"
 import type React from "react"
 import type { Metadata, Viewport } from "next"
 import { Toaster } from "@/components/ui/toaster"
 import { Footer } from "@/components/footer"
 import { SiteHeader } from "@/components/site-header"
 import "./globals.css"
-import { SessionRefresh } from "@/components/session-refresh" // Add the SessionRefresh import at the top of the file
 
 export const metadata: Metadata = {
   title: "Resend-It",
   description: "Smart reusable packaging as a service powered by Multi-Context AI and blockchain technologies",
-  generator: "v0.dev",
+  generator: "resend-it.com",
   manifest: "/manifest",
   applicationName: "Resend-It",
   appleWebApp: {
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "Resend-It",
-    title: "Resend-It - Smart Reusable Packaging",
+    title: "Resend-It - Optimization Engine",
     description: "Smart reusable packaging as a service powered by Multi-Context AI and blockchain technologies",
   },
   icons: {
