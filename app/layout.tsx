@@ -65,12 +65,13 @@ export default function RootLayout({
         <meta name="msapplication-tap-highlight" content="no" />
       </head>
       <body className="min-h-screen flex flex-col">
+<SessionRefresh />{" "}
         <SiteHeader />
-        <SessionRefresh />{" "}
+        
         {/* Inside the RootLayout component, add the SessionRefresh component right after the <Providers> component */}
-        <div className="flex-grow">{children}</div>
+        <div className="flex-grow">{children}</div> <Toaster />
         <Footer />
-        <Toaster />
+        
       </body>
     </html>
    
