@@ -52,7 +52,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <ReactQueryClientProvider>
+ 
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="apple-touch-icon" href="/images/resendit-icon.png" />
@@ -73,6 +73,6 @@ export default function RootLayout({
         <Toaster />
       </body>
     </html>
-    </ReactQueryClientProvider>
+   
   )
 }
