@@ -12,6 +12,7 @@ export async function middleware(request: NextRequest) {
   // Check if the route should be publicly accessible
   const isPublicRoute =
     request.nextUrl.pathname.startsWith("/p/") ||
+request.nextUrl.pathname === "/api-docs" ||
     request.nextUrl.pathname.startsWith("/api/check-profile") ||
     request.nextUrl.pathname.startsWith("/api/debug-profile") ||
     request.nextUrl.pathname.startsWith("/api/fix-profiles") ||
@@ -19,6 +20,7 @@ export async function middleware(request: NextRequest) {
     request.nextUrl.pathname === "/test-public-card" ||
     request.nextUrl.pathname === "/login" ||
     request.nextUrl.pathname === "/signup" ||
+    
     request.nextUrl.pathname === "/forgot-password" ||
     request.nextUrl.pathname === "/reset-password" ||
     request.nextUrl.pathname === "/" ||
