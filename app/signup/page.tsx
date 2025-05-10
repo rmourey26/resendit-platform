@@ -1,11 +1,11 @@
 import type { Metadata } from "next"
-import SignupPageClient from "./pageClient"
+import SignupSimplePageClient from "./pageClient"
 
 export const metadata: Metadata = {
-  title: "Sign Up - Resend-It",
-  description: "Create your account to start optimizing your business",
+  title: "Simple Sign Up - CardChain",
+  description: "Create your account with image URLs",
 }
 
-export default async function SignupPage() {
-  return <SignupPageClient />
+export default async function SignupSimplePage() {
+  return <SignupSimplePageClient />
 }
