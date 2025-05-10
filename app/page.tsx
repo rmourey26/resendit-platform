@@ -27,11 +27,10 @@ export default function HomePage() {
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2 max-w-[600px]">
                   <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                    Revolutionary Smart Packaging Platform
+                    Revolutionary Optimization Engine and SPaaS
                   </h1>
                   <p className="text-gray-500 md:text-xl dark:text-gray-400 mt-4">
-                    Boost revenue by 40% with our award-winning, eco-friendly WAIQ platform that transforms your supply
-                    chain and enhances customer loyalty.
+                   What could your business do with a 500% 12 month Resend-It ROI?
                   </p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3 mt-6">
