@@ -1,4 +1,5 @@
 import { SessionRefresh } from "@/components/session-refresh"
+import { ReactQueryClientProvider } from "@/components/providers/query-provider"
 import { ClientProviders } from "@/components/client-providers"
 import type React from "react"
 import type { Metadata, Viewport } from "next"
@@ -51,6 +52,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
+    <ReactQueryClientProvider>
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="apple-touch-icon" href="/images/resendit-icon.png" />
@@ -71,5 +73,6 @@ export default function RootLayout({
         <Toaster />
       </body>
     </html>
+    </ReactQueryClientProvider>
   )
 }
