@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -12,6 +12,8 @@ import { updateProfile } from "../actions/profile"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ImageUpload } from "@/components/image-upload"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { AlertCircle, Loader2 } from "lucide-react"
 
 interface ProfileFormProps {
   initialData: {
@@ -48,42 +50,114 @@ export default function ProfileForm({ initialData, userId }: ProfileFormProps) {
 
   const [formData, setFormData] = useState(safeInitialData)
   const [isLoading, setIsLoading] = useState(false)
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({})
+  const [formInitialized, setFormInitialized] = useState(false)
   const router = useRouter()
   const { toast } = useToast()
+
+  // Ensure form data is properly initialized with initial data
+  useEffect(() => {
+    if (initialData && !formInitialized) {
+      setFormData(safeInitialData)
+      setFormInitialized(true)
+    }
+  }, [initialData, formInitialized])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
+
+    // Clear validation error for this field when user types
+    if (validationErrors[name]) {
+      setValidationErrors((prev) => {
+        const newErrors = { ...prev }
+        delete newErrors[name]
+        return newErrors
+      })
+    }
   }
 
   const handleImageChange = (field: string) => (url: string) => {
     setFormData((prev) => ({ ...prev, [field]: url }))
+
+    // Clear validation error for this field when user updates image
+    if (validationErrors[field]) {
+      setValidationErrors((prev) => {
+        const newErrors = { ...prev }
+        delete newErrors[field]
+        return newErrors
+      })
+    }
+  }
+
+  const validateForm = () => {
+    const errors: Record<string, string> = {}
+
+    if (!formData.full_name || formData.full_name.trim() === "") {
+      errors.full_name = "Full name is required"
+    }
+
+    if (!formData.email || formData.email.trim() === "") {
+      errors.email = "Email is required"
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.email = "Email is invalid"
+    }
+
+    // Website validation - if provided, must be valid URL
+    if (
+      formData.website &&
+      formData.website.trim() !== "" &&
+      !formData.website.startsWith("http") &&
+      !formData.website.startsWith("https://")
+    ) {
+      // This is not an error, we'll fix it in the submission
+    }
+
+    // LinkedIn validation - if provided, must be valid URL
+    if (
+      formData.linkedin_url &&
+      formData.linkedin_url.trim() !== "" &&
+      !formData.linkedin_url.startsWith("http") &&
+      !formData.linkedin_url.startsWith("https://")
+    ) {
+      // This is not an error, we'll fix it in the submission
+    }
+
+    setValidationErrors(errors)
+    return Object.keys(errors).length === 0
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    // Validate form
+    if (!validateForm()) {
+      toast({
+        title: "Validation Error",
+        description: "Please fix the errors in the form.",
+        variant: "destructive",
+      })
+      return
+    }
+
     setIsLoading(true)
 
     try {
-      // Simple client-side validation
-      if (!formData.full_name || !formData.email) {
-        throw new Error("Full name and email are required")
-      }
-
       // Clean up website URL if needed
       let websiteValue = formData.website
-      if (websiteValue && !websiteValue.startsWith("http")) {
+      if (websiteValue && websiteValue.trim() !== "" && !websiteValue.startsWith("http")) {
         websiteValue = `https://${websiteValue}`
       }
 
       // Clean up LinkedIn URL if needed
       let linkedinValue = formData.linkedin_url
-      if (linkedinValue && !linkedinValue.startsWith("http")) {
+      if (linkedinValue && linkedinValue.trim() !== "" && !linkedinValue.startsWith("http")) {
         linkedinValue = `https://${linkedinValue}`
       }
 
-      // Prepare data for submission
+      // Prepare data for submission - IMPORTANT: Include the ID in the data
       const dataToSubmit = {
+        id: userId, // Include the user ID in the data object
         ...formData,
         website: websiteValue,
         linkedin_url: linkedinValue,
@@ -91,7 +165,8 @@ export default function ProfileForm({ initialData, userId }: ProfileFormProps) {
 
       console.log("Submitting profile data:", dataToSubmit)
 
-      const result = await updateProfile(userId, dataToSubmit)
+      // Call updateProfile with the single data object that includes the ID
+      const result = await updateProfile(dataToSubmit)
 
       if (result.success) {
         toast({
@@ -114,9 +189,28 @@ export default function ProfileForm({ initialData, userId }: ProfileFormProps) {
     }
   }
 
+  // Debug output to help diagnose issues
+  console.log("Initial data:", initialData)
+  console.log("Form data:", formData)
+  console.log("Validation errors:", validationErrors)
+
   return (
     <Card>
       <CardContent className="pt-6">
+        {Object.keys(validationErrors).length > 0 && (
+          <Alert variant="destructive" className="mb-6">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              Please fix the following errors:
+              <ul className="mt-2 list-disc pl-5">
+                {Object.entries(validationErrors).map(([field, error]) => (
+                  <li key={field}>{error}</li>
+                ))}
+              </ul>
+            </AlertDescription>
+          </Alert>
+        )}
+
         <Tabs defaultValue="basic" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="basic">Basic Info</TabsTrigger>
@@ -126,15 +220,29 @@ export default function ProfileForm({ initialData, userId }: ProfileFormProps) {
           <form onSubmit={handleSubmit} className="space-y-6 mt-6">
             <TabsContent value="basic" className="space-y-6">
               <div>
-                <Label htmlFor="full_name">Full Name</Label>
-                <Input id="full_name" name="full_name" value={formData.full_name} onChange={handleChange} required />
+                <Label htmlFor="full_name" className={validationErrors.full_name ? "text-destructive" : ""}>
+                  Full Name *
+                </Label>
+                <Input
+                  id="full_name"
+                  name="full_name"
+                  value={formData.full_name}
+                  onChange={handleChange}
+                  required
+                  className={validationErrors.full_name ? "border-destructive" : ""}
+                />
+                {validationErrors.full_name && (
+                  <p className="text-sm text-destructive mt-1">{validationErrors.full_name}</p>
+                )}
               </div>
               <div>
                 <Label htmlFor="username">Username</Label>
                 <Input id="username" name="username" value={formData.username} onChange={handleChange} />
               </div>
               <div>
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className={validationErrors.email ? "text-destructive" : ""}>
+                  Email *
+                </Label>
                 <Input
                   id="email"
                   name="email"
@@ -143,7 +251,9 @@ export default function ProfileForm({ initialData, userId }: ProfileFormProps) {
                   onChange={handleChange}
                   required
                   placeholder="you@example.com"
+                  className={validationErrors.email ? "border-destructive" : ""}
                 />
+                {validationErrors.email && <p className="text-sm text-destructive mt-1">{validationErrors.email}</p>}
               </div>
 
               <ImageUpload
@@ -229,7 +339,14 @@ export default function ProfileForm({ initialData, userId }: ProfileFormProps) {
             </TabsContent>
 
             <Button type="submit" disabled={isLoading} className="mt-6">
-              {isLoading ? "Updating..." : "Update Profile"}
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Updating...
+                </>
+              ) : (
+                "Update Profile"
+              )}
             </Button>
           </form>
         </Tabs>
