@@ -18,7 +18,7 @@ export function Footer() {
               </span>
             </div>
             <p className="text-gray-500 max-w-md">
-              Smart reusable packaging as a service powered by Multi-Context AI and blockchain technologies.
+              Smart reusable packaging as a service powered by multi-context AI and blockchain technologies.
             </p>
           </div>
 
